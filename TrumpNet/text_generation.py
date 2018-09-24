@@ -4,9 +4,9 @@
 # using tf.keras
 # using eager execution
 
-# dataset: Trump tweets
+# dataset: Trump tweets (cleaned v1)
 # 30k
-#
+# cleaned v1 -> no t.co links
 
 # Notes:
 # RNN
@@ -41,7 +41,7 @@ print(tf.__version__)
 #)
 
 # explore data
-f = open(r"C:\Users\micha\PycharmProjects\TrumpNet\tweets.txt", "r", encoding="utf8")
+f = open(r"C:\Users\micha\PycharmProjects\TrumpNet\tweets_clean_v1.txt", "r", encoding="utf8")
 text = f.read()
 
 #text = unidecode.unidecode(open(path_to_file).encoding("utf-8").read())
