@@ -9,7 +9,7 @@
 # cleaned v1 -> no t.co links
 
 # Notes:
-# RNN
+# RNN - sequential model, 1-dimensional
 # lower-level implementation
 # character based model
 # structure of generated text
@@ -18,16 +18,13 @@
 ################################################################################
 # IMPORTs
 import numpy as np
-import unidecode
 import time
 
 import tensorflow as tf
-from tensorflow import keras
 from tensorflow.keras import Model
 from tensorflow.keras.layers import Embedding, CuDNNGRU, GRU, Dense
 from tensorflow.keras.activations import sigmoid
 from tensorflow.keras.initializers import glorot_uniform
-#from tensorflow.keras.optimizers import Adam
 
 tf.enable_eager_execution()
 
@@ -40,12 +37,13 @@ print(tf.__version__)
 #    origin=r"C:\Users\micha\PycharmProjects\TrumpNet\tweets.txt"
 #)
 
-# explore data
-f = open(r"C:\Users\micha\PycharmProjects\TrumpNet\tweets_clean_v1.txt", "r", encoding="utf8")
+
+f = open(r"C:\Users\micha\PycharmProjects\TrumpNet\tweets_clean_v2.txt", "r", encoding="utf8")
 text = f.read()
 
 #text = unidecode.unidecode(open(path_to_file).encoding("utf-8").read())
-print("\nLength of dataset text: " + str(len(text)))
+# explore data
+#print("\nLength of dataset text: " + str(len(text)))
 #print(text[:1000])
 
 # create dictionaries to map chars <--> indices
@@ -62,7 +60,7 @@ num_RNN_units = 1024
 batch_size = 64
 buffer_size = 10000  # used to shuffle dataset
 num_epochs = 30
-num_char_generated = 1000
+num_char_generated = 280
 start_string = "M"
 temperature = 1.0  # low temps -> more predictable text, high temps -> surprising text
 
