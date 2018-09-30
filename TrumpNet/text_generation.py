@@ -4,9 +4,8 @@
 # using tf.keras
 # using eager execution
 
-# dataset: Trump tweets (cleaned v1)
+# dataset: Trump tweets
 # 30k
-# cleaned v1 -> no t.co links
 
 # Notes:
 # RNN - sequential model, 1-dimensional
@@ -37,8 +36,9 @@ print(tf.__version__)
 #    origin=r"C:\Users\micha\PycharmProjects\TrumpNet\tweets.txt"
 #)
 
+filename = r"C:\Users\micha\PycharmProjects\TrumpNet\tweets_clean_noURLs.txt"
 
-f = open(r"C:\Users\micha\PycharmProjects\TrumpNet\tweets_clean_v2.txt", "r", encoding="utf8")
+f = open(filename, "r", encoding="utf8")
 text = f.read()
 
 #text = unidecode.unidecode(open(path_to_file).encoding("utf-8").read())
@@ -57,7 +57,7 @@ max_sentence_length = 100  # 100 char chunks of input
 vocab_size = len(unique)  # pool from all unique char
 embedding_dim = 256
 num_RNN_units = 1024
-batch_size = 64
+batch_size = 128
 buffer_size = 10000  # used to shuffle dataset
 num_epochs = 50
 num_char_generated = 280
@@ -82,12 +82,14 @@ for f in range(0, len(text) - max_sentence_length, max_sentence_length):
 
 print("Shape of input text: " + str(np.array(input_text).shape))
 print("Shape of target text: " + str(np.array(target_text).shape))
+print("\n")
 
 ################################################################################
 # create batches and shuffle
-# using tf.data
+# using tf.data.Dataset
 dataset = tf.data.Dataset.from_tensor_slices((input_text, target_text)).shuffle(buffer_size=buffer_size)
-dataset = dataset.apply(tf.contrib.data.batch_and_drop_remainder(batch_size))
+#dataset = dataset.apply(tf.contrib.data.batch_and_drop_remainder(batch_size))
+dataset = dataset.batch(batch_size=batch_size, drop_remainder=True)
 
 ################################################################################
 # build model
@@ -169,6 +171,7 @@ def loss_fn(real, predictions):
 # initialize hidden state w/ zeros
 # iterate over dataset batch by batch
 # calculate predictions and hidden states
+print("\n")
 for epoch in range(num_epochs):
     start = time.time()
 
@@ -194,7 +197,7 @@ for epoch in range(num_epochs):
             print("Epoch {} Batch {} Loss {:.4f}".format(epoch+1, batch, loss))
 
     print("Epoch {} Loss {:.4f}".format(epoch+1, loss))
-    print("Time taken for 1 epoch {} sec\n".format(time.time() - start))
+    print("Time taken for 1 epoch {:.3f} seconds\n".format(time.time() - start))
 
 ################################################################################
 # predict using trained model

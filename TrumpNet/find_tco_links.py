@@ -14,8 +14,8 @@ import os
 import re
 
 current_dir = os.getcwd()
-filename = "tweets_clean_v1.txt"
-new_filename = "tweets_clean_v2.txt"
+filename = "tweets_og.txt"
+new_filename = "tweets_clean_noURLs.txt"
 file = os.path.join(current_dir, filename)
 new_file = os.path.join(current_dir, new_filename)
 
