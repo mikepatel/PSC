@@ -53,16 +53,16 @@ idx2char = {i: u for i, u in enumerate(unique)}  # create mapping from indices -
 
 ################################################################################
 # model parameters
-max_sentence_length = 100  # 100 char chunks of input
+max_sentence_length = 300  # 100 char chunks of input
 vocab_size = len(unique)  # pool from all unique char
 embedding_dim = 256
 num_RNN_units = 1024
-batch_size = 128
+batch_size = 256
 buffer_size = 10000  # used to shuffle dataset
-num_epochs = 50
+num_epochs = 70
 num_char_generated = 280
-start_string = "M"
-temperature = 1.0  # low temps -> more predictable text, high temps -> surprising text
+start_string = "A"
+temperature = 0.5  # low temps -> more predictable text, high temps -> surprising text
 
 ################################################################################
 # Input and output tensors
