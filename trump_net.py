@@ -38,7 +38,7 @@ def build_tweets_list():
             if line_count == 0:  # column names
                 line_count += 1
             else:
-                tweets.append(str(row))
+                tweets.append(str(row[0]))  # first column in csv
                 line_count += 1
 
     print(len(tweets))
