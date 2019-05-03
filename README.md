@@ -4,7 +4,7 @@ The Passive Sign Convention project is a partnership between two friends, John a
 
 ## Instructions
 ```
-python trump_net.py
+$ python trump_net.py
 ```
 
 ## Results
