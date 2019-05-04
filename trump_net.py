@@ -20,6 +20,7 @@ import tensorflow as tf
 
 import os
 import csv
+import re
 
 
 ################################################################################
@@ -50,3 +51,7 @@ def build_tweets_list():
 if __name__ == "__main__":
     print("\nTF version: {}".format(tf.__version__))
     TWEETS = build_tweets_list()
+
+    repl = re.sub("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", "", x)
+
+
