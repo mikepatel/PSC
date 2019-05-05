@@ -15,7 +15,7 @@ Notes:
 
 """
 ################################################################################
-# IMPORTs
+# Imports
 import tensorflow as tf
 
 import os
@@ -39,7 +39,7 @@ class Dataset:
 
         self.build_tweets_list()
 
-    # preprocesses tweets and writes output to csv
+    # preprocess tweets and write output to csv
     def build_tweets_csv(self):
         csv_reader = csv.reader(open(self.dataset_csv, mode="r", encoding="utf8"))
         csv_writer = csv.writer(open(self.dataset_clean_csv, mode="w", newline="", encoding="utf8"))
@@ -88,6 +88,3 @@ if __name__ == "__main__":
     d = Dataset()
     tweets = d.tweets
     print("Number of tweets: {}".format(d.get_num_tweets()))
-
-
-
