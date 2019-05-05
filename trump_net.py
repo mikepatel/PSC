@@ -48,8 +48,12 @@ def build_tweets_list():
                 tweets.append(tweet)  # first column in csv
                 line_count += 1
 
-    print(len(tweets))
+    print("Number of tweets in dataset: {}".format(len(tweets)))
     return tweets
+
+
+################################################################################
+# Model
 
 
 ################################################################################
