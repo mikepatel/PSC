@@ -39,7 +39,13 @@ def build_tweets_list():
             if line_count == 0:  # column names
                 line_count += 1
             else:
-                tweets.append(str(row[0]))  # first column in csv
+                tweet = str(row[0]).strip()
+                tweet = re.sub(
+                    "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+                    "",
+                    tweet
+                )
+                tweets.append(tweet)  # first column in csv
                 line_count += 1
 
     print(len(tweets))
@@ -51,7 +57,5 @@ def build_tweets_list():
 if __name__ == "__main__":
     print("\nTF version: {}".format(tf.__version__))
     TWEETS = build_tweets_list()
-
-    repl = re.sub("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", "", x)
 
 
