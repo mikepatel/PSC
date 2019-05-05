@@ -34,7 +34,10 @@ tweets_data_no_url_csv = os.path.join(os.getcwd(), filename)
 class Dataset:
     def __init__(self):
         self.tweets = []
-        self.build_tweets_csv()
+
+        if not os.path.exists(tweets_data_no_url_csv):
+            self.build_tweets_csv()
+
         self.build_tweets_list()
 
     # preprocesses tweets and writes output to csv
