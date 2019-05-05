@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     d = Dataset()
     tweets = d.tweets
-    print(d.get_num_tweets())
+    print("Number of tweets: {}".format(d.get_num_tweets()))
 
 
 
