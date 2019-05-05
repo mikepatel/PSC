@@ -24,27 +24,25 @@ import re
 
 
 ################################################################################
-tweets_data_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
-filename = "DJT_tweets_noURLs.csv"
-tweets_data_no_url_csv = os.path.join(os.getcwd(), filename)
-
-
-################################################################################
 # Data Preprocessing
 class Dataset:
     def __init__(self):
+        # csv files
+        self.dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
+        self.dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
+
         self.tweets = []
 
-        if not os.path.exists(tweets_data_no_url_csv):
+        # check if csv of cleaned tweets already exists
+        if not os.path.exists(self.dataset_clean_csv):
             self.build_tweets_csv()
 
         self.build_tweets_list()
 
     # preprocesses tweets and writes output to csv
-    @staticmethod
-    def build_tweets_csv():
-        csv_reader = csv.reader(open(tweets_data_csv, mode="r", encoding="utf8"))
-        csv_writer = csv.writer(open(tweets_data_no_url_csv, mode="w", newline="", encoding="utf8"))
+    def build_tweets_csv(self):
+        csv_reader = csv.reader(open(self.dataset_csv, mode="r", encoding="utf8"))
+        csv_writer = csv.writer(open(self.dataset_clean_csv, mode="w", newline="", encoding="utf8"))
 
         line_count = 0
 
@@ -63,7 +61,7 @@ class Dataset:
 
     # build list of cleaned tweets
     def build_tweets_list(self):
-        csv_reader = csv.reader(open(tweets_data_no_url_csv, mode="r", encoding="utf8"))
+        csv_reader = csv.reader(open(self.dataset_clean_csv, mode="r", encoding="utf8"))
 
         for row in csv_reader:
             tweet = str(row[0]).rstrip()
