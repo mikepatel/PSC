@@ -102,3 +102,7 @@ if __name__ == "__main__":
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
     print(char2idx)
+
+    # create mapping from indices -> unique char
+    idx2char = {i: u for i, u in enumerate(unique_chars)}
+    print(idx2char)
