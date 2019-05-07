@@ -1,8 +1,8 @@
 """"
 John Jefferson III and Michael Patel
-September 2018 -
+September 2018
 Python 3.6.5
-TF
+TF 1.12.0
 
 Project Description:
     - Text Generator modelling using RNNs
@@ -64,7 +64,7 @@ class Dataset:
         csv_reader = csv.reader(open(self.dataset_clean_csv, mode="r", encoding="utf8"))
 
         for row in csv_reader:
-            tweet = str(row[0]).rstrip()
+            tweet = str(row[0]).strip()
             self.tweets.append(tweet)
 
     # get list of cleaned tweets
@@ -85,6 +85,20 @@ class Dataset:
 if __name__ == "__main__":
     print("\nTF version: {}".format(tf.__version__))
 
+    #
     d = Dataset()
     tweets = d.tweets
     print("Number of tweets: {}".format(d.get_num_tweets()))
+
+    # build a set of all unique characters from tweets
+    unique_chars = set()
+    for tweet in tweets:
+        for char in tweet:
+            unique_chars.add(char)
+    unique_chars = sorted(unique_chars)
+    print(unique_chars)
+    print(len(unique_chars))
+
+    # create mapping from unique char -> indices
+    char2idx = {u: i for i, u in enumerate(unique_chars)}
+    print(char2idx)
