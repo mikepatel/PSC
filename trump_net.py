@@ -19,7 +19,6 @@ Notes:
 import tensorflow as tf
 
 import os
-import csv
 import re
 import pandas as pd
 
@@ -60,9 +59,10 @@ class Dataset:
             tweet = self._clean_tweets(tweet)
             _temp.append(tweet)
 
+        # write cleaned tweets to a new csv
         pd.DataFrame(_temp).to_csv(self.dataset_clean_csv, header=["Tweet_Text"], index=None)
 
-    # get list of cleaned tweets
+    # get dataframe of cleaned tweets
     def get_tweets(self):
         return self.tweets_df
 
@@ -82,7 +82,6 @@ if __name__ == "__main__":
 
     #
     d = Dataset()
-
     tweets = d.get_tweets()
     print(tweets)
     print("Number of tweets: {}".format(d.get_num_tweets()))
