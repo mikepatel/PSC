@@ -21,6 +21,7 @@ import tensorflow as tf
 import os
 import csv
 import re
+import pandas as pd
 
 
 ################################################################################
@@ -31,33 +32,35 @@ class Dataset:
         self.dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
         self.dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
 
-        self.tweets = []
+        # creates csv after cleaning tweets dataset
+        self.create_clean_csv()
 
-        # check if csv of cleaned tweets already exists
-        if not os.path.exists(self.dataset_clean_csv):
-            self.build_tweets_csv()
+        # tweets dataframe
+        self.tweets_df = pd.read_csv(self.dataset_clean_csv)
+        #print(self.tweets_df)
 
-        self.build_tweets_list()
+    #
+    @staticmethod
+    def clean_tweets(tweet):
+        tweet = re.sub(
+            "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+            "",
+            tweet
+        ).strip()
+
+        return tweet
 
     # preprocess tweets and write output to csv
-    def build_tweets_csv(self):
-        csv_reader = csv.reader(open(self.dataset_csv, mode="r", encoding="utf8"))
-        csv_writer = csv.writer(open(self.dataset_clean_csv, mode="w", newline="", encoding="utf8"))
+    def create_clean_csv(self):
+        tweets_df = pd.read_csv(self.dataset_csv)
+        _temp = []
 
-        line_count = 0
+        for index, row in tweets_df.iterrows():
+            tweet = row["Tweet_Text"]
+            tweet = self.clean_tweets(tweet)
+            _temp.append(tweet)
 
-        for row in csv_reader:
-            if line_count == 0:  # column names
-                line_count += 1
-            else:
-                tweet = str(row[0]).rstrip()
-                tweet = str(re.sub(
-                    "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
-                    "",
-                    tweet
-                )).rstrip()
-                csv_writer.writerow([tweet])
-                line_count += 1
+        pd.DataFrame(_temp).to_csv(self.dataset_clean_csv, header=["Tweet_Text"], index=None)
 
     # build list of cleaned tweets
     def build_tweets_list(self):
@@ -87,6 +90,7 @@ if __name__ == "__main__":
 
     #
     d = Dataset()
+    """
     tweets = d.tweets
     print("Number of tweets: {}".format(d.get_num_tweets()))
 
@@ -106,3 +110,4 @@ if __name__ == "__main__":
     # create mapping from indices -> unique char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
     print(idx2char)
+    """
