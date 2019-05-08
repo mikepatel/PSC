@@ -27,15 +27,11 @@ import pandas as pd
 # Data Preprocessing
 class Dataset:
     def __init__(self):
-        # csv files
-        self.dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
-        self.dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
+        # create csv after cleaning tweets dataset
+        clean_csv = self._create_clean_csv()
 
-        # creates csv after cleaning tweets dataset
-        self._create_clean_csv()
-
-        # tweets dataframe
-        self.tweets_df = pd.read_csv(self.dataset_clean_csv)
+        # create tweets dataframe object
+        self.tweets_df = pd.read_csv(clean_csv)
 
     # perform preprocessing cleaning
     @staticmethod
@@ -51,7 +47,8 @@ class Dataset:
 
     # preprocess tweets and write output to csv
     def _create_clean_csv(self):
-        tweets_df = pd.read_csv(self.dataset_csv)
+        dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
+        tweets_df = pd.read_csv(dataset_csv)
         _temp = []
 
         for index, row in tweets_df.iterrows():
@@ -60,7 +57,9 @@ class Dataset:
             _temp.append(tweet)
 
         # write cleaned tweets to a new csv
-        pd.DataFrame(_temp).to_csv(self.dataset_clean_csv, header=["Tweet_Text"], index=None)
+        dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
+        pd.DataFrame(_temp).to_csv(dataset_clean_csv, header=["Tweet_Text"], index=None)
+        return dataset_clean_csv
 
     # get dataframe of cleaned tweets
     def get_tweets(self):
