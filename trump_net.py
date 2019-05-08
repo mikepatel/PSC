@@ -33,15 +33,15 @@ class Dataset:
         self.dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
 
         # creates csv after cleaning tweets dataset
-        self.create_clean_csv()
+        self._create_clean_csv()
 
         # tweets dataframe
         self.tweets_df = pd.read_csv(self.dataset_clean_csv)
-        #print(self.tweets_df)
 
-    #
+    # perform preprocessing cleaning
     @staticmethod
-    def clean_tweets(tweet):
+    def _clean_tweets(tweet):
+        # remove url links in tweet text
         tweet = re.sub(
             "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
             "",
@@ -51,32 +51,24 @@ class Dataset:
         return tweet
 
     # preprocess tweets and write output to csv
-    def create_clean_csv(self):
+    def _create_clean_csv(self):
         tweets_df = pd.read_csv(self.dataset_csv)
         _temp = []
 
         for index, row in tweets_df.iterrows():
             tweet = row["Tweet_Text"]
-            tweet = self.clean_tweets(tweet)
+            tweet = self._clean_tweets(tweet)
             _temp.append(tweet)
 
         pd.DataFrame(_temp).to_csv(self.dataset_clean_csv, header=["Tweet_Text"], index=None)
 
-    # build list of cleaned tweets
-    def build_tweets_list(self):
-        csv_reader = csv.reader(open(self.dataset_clean_csv, mode="r", encoding="utf8"))
-
-        for row in csv_reader:
-            tweet = str(row[0]).strip()
-            self.tweets.append(tweet)
-
     # get list of cleaned tweets
     def get_tweets(self):
-        return self.tweets
+        return self.tweets_df
 
     # get number of cleaned tweets
     def get_num_tweets(self):
-        return len(self.tweets)
+        return len(self.tweets_df)
 
 
 ################################################################################
@@ -90,10 +82,11 @@ if __name__ == "__main__":
 
     #
     d = Dataset()
-    """
-    tweets = d.tweets
-    print("Number of tweets: {}".format(d.get_num_tweets()))
 
+    tweets = d.get_tweets()
+    print(tweets)
+    print("Number of tweets: {}".format(d.get_num_tweets()))
+    """
     # build a set of all unique characters from tweets
     unique_chars = set()
     for tweet in tweets:
