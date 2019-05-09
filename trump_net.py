@@ -47,18 +47,19 @@ class Dataset:
 
     # preprocess tweets and write output to csv
     def _create_clean_csv(self):
-        dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset_JustTweetText.csv")
-        tweets_df = pd.read_csv(dataset_csv)
+        dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset.csv")
+        column_header = "Tweet_Text"
+        tweets_df = pd.read_csv(dataset_csv, usecols=[column_header])
         _temp = []
 
         for index, row in tweets_df.iterrows():
-            tweet = row["Tweet_Text"]
+            tweet = row[column_header]
             tweet = self._clean_tweets(tweet)
             _temp.append(tweet)
 
         # write cleaned tweets to a new csv
         dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
-        pd.DataFrame(_temp).to_csv(dataset_clean_csv, header=["Tweet_Text"], index=None)
+        pd.DataFrame(_temp).to_csv(dataset_clean_csv, header=[column_header], index=None)
         return dataset_clean_csv
 
     # get dataframe of cleaned tweets
