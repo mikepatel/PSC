@@ -78,22 +78,25 @@ class Dataset:
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # print out TF version
     print("\nTF version: {}".format(tf.__version__))
 
     #
     d = Dataset()
     tweets = d.get_tweets()
-    print(tweets)
+    #print(tweets)
     print("Number of tweets: {}".format(d.get_num_tweets()))
-    """
+    #print(type(tweets))
+
     # build a set of all unique characters from tweets
     unique_chars = set()
-    for tweet in tweets:
+    for index, row in tweets.iterrows():
+        tweet = str(row["Tweet_Text"])
         for char in tweet:
             unique_chars.add(char)
     unique_chars = sorted(unique_chars)
-    print(unique_chars)
-    print(len(unique_chars))
+    #print(unique_chars)
+    print("Number of Unique Chars: {}".format(len(unique_chars)))
 
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
@@ -102,4 +105,3 @@ if __name__ == "__main__":
     # create mapping from indices -> unique char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
     print(idx2char)
-    """
