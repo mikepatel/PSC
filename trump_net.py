@@ -72,10 +72,6 @@ class Dataset:
 
 
 ################################################################################
-# Model
-
-
-################################################################################
 # Main
 if __name__ == "__main__":
     # print out TF version
@@ -87,6 +83,10 @@ if __name__ == "__main__":
     #print(tweets)
     print("Number of tweets: {}".format(d.get_num_tweets()))
     #print(type(tweets))
+
+    # text => tokens => vectors
+    # segment text into char tokens
+
 
     # build a set of all unique characters from tweets
     unique_chars = set()
@@ -105,3 +105,6 @@ if __name__ == "__main__":
     # create mapping from indices -> unique char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
     print(idx2char)
+
+
+
