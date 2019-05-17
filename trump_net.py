@@ -20,6 +20,7 @@ import tensorflow as tf
 
 import os
 import re
+import numpy as np
 import pandas as pd
 
 
@@ -63,7 +64,7 @@ class Dataset:
         return dataset_clean_csv
 
     # get dataframe of cleaned tweets
-    def get_tweets(self):
+    def get_tweets_df(self):
         return self.tweets_df
 
     # get number of cleaned tweets
@@ -79,21 +80,32 @@ if __name__ == "__main__":
 
     #
     d = Dataset()
-    tweets = d.get_tweets()
+    tweets_df = d.get_tweets_df()
+    tweets = []
+    for index, row in tweets_df.iterrows():
+        tweet = str(row[0])
+        tweets.append(tweet)
+    #tweets = tweets_df.values
     #print(tweets)
-    print("Number of tweets: {}".format(d.get_num_tweets()))
+    num_tweets = d.get_num_tweets()
+    print("Number of tweets: {}".format(num_tweets))
     #print(type(tweets))
 
     # text => tokens => vectors
     # segment text into char tokens
+    unique_chars = set()
+    for tweet in tweets:
+        for char in tweet:
+            unique_chars.add(char)
 
 
     # build a set of all unique characters from tweets
-    unique_chars = set()
-    for index, row in tweets.iterrows():
+    """
+    for index, row in tweets_df.iterrows():
         tweet = str(row["Tweet_Text"])
         for char in tweet:
             unique_chars.add(char)
+    """
     unique_chars = sorted(unique_chars)
     #print(unique_chars)
     print("Number of Unique Chars: {}".format(len(unique_chars)))
@@ -106,5 +118,20 @@ if __name__ == "__main__":
     idx2char = {i: u for i, u in enumerate(unique_chars)}
     print(idx2char)
 
+    input_seq = []  # all char in chunk, except last
+    target_seq = []  # all char in chunk, except first
+
+    MAX_SENTENCE_LENGTH = 300
+
+    # convert each char into int using char2idx
+    for chunk in range(0, num_tweets-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
+        inputs = tweets[chunk: chunk+MAX_SENTENCE_LENGTH]
+        targets = tweets[chunk+1: chunk+1+MAX_SENTENCE_LENGTH]
+
+        input_seq.append([char2idx[i] for i in inputs])
+        target_seq.append([char2idx[t] for t in targets])
+
+    print("Shape of input sequence: {}".format(str(np.array(input_seq).shape)))
+    print("Shape of target sequence: {}".format(str(np.array(target_seq).shape)))
 
 
