@@ -93,11 +93,12 @@ if __name__ == "__main__":
 
     # text => tokens => vectors
     # segment text into char tokens
+    """
     unique_chars = set()
     for tweet in tweets:
         for char in tweet:
             unique_chars.add(char)
-
+    """
 
     # build a set of all unique characters from tweets
     """
@@ -106,7 +107,8 @@ if __name__ == "__main__":
         for char in tweet:
             unique_chars.add(char)
     """
-    unique_chars = sorted(unique_chars)
+    #unique_chars = sorted(unique_chars)
+    unique_chars = sorted(set(tweets))
     #print(unique_chars)
     print("Number of Unique Chars: {}".format(len(unique_chars)))
 
