@@ -89,7 +89,8 @@ if __name__ == "__main__":
     print("\nTF version: {}".format(tf.__version__))
 
     ########################################
-    # load dataset
+    # ETL = Extraction, Transformation, Load
+    # get dataset
     d = Dataset()
     tweets_df = d.get_tweets_df()  # dataframe
     num_tweets = d.get_num_tweets()
@@ -121,6 +122,8 @@ if __name__ == "__main__":
     target_seqs = []
 
     MAX_SENTENCE_LENGTH = 300
+    BUFFER_SIZE = 10000
+    BATCH_SIZE = 256
 
     # build lists of sequences of indices
     for i in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
@@ -135,6 +138,11 @@ if __name__ == "__main__":
     # shape: (x, MAX_SENTENCE_LENGTH) where x is number of index sequences
     print("Shape of input sequence: {}".format(str(np.array(input_seqs).shape)))
     print("Shape of target sequence: {}".format(str(np.array(target_seqs).shape)))
+
+    # use tf.data.Dataset to create batches and shuffle
+    input_data = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
+    input_data = input_data.shuffle(buffer_size=BUFFER_SIZE)
+    input_data = input_data.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
     ########################################
 
