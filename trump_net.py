@@ -44,7 +44,7 @@ class Dataset:
             tweet
         ).strip()
 
-        # remove 'RT'
+        # remove 'RT' in tweet text
         tweet = re.sub(
             "RT",
             "",
@@ -68,7 +68,7 @@ class Dataset:
         # write cleaned tweets to a new csv
         dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
         temp_df = pd.DataFrame(_temp)
-        temp_df.replace("", np.nan, inplace=True)  # replace empty cells with np.nan
+        temp_df.replace("", np.nan, inplace=True)  # replace empty string cells with np.nan
         temp_df = temp_df.dropna()  # drop np.nan cells
         temp_df.to_csv(dataset_clean_csv, header=[column_header], index=None)
         return dataset_clean_csv
@@ -88,62 +88,22 @@ if __name__ == "__main__":
     # print out TF version
     print("\nTF version: {}".format(tf.__version__))
 
-    #
+    # load dataset
     d = Dataset()
     tweets_df = d.get_tweets_df()  # dataframe
-
-    # build list of tweets from dataframe
-    print(type(tweets_df.values))
-    print(type(tweets_df.values.tolist()))
-    print(len(tweets_df.values.tolist()))
-    print("".join(tweets_df.values[0]))
-    tweets = []
-    print(type(tweets))
-
-    """
-    for i in tweets_df.values:
-        try:
-            print("".join(i))
-        #quit()
-        except TypeError as te:
-            print(te)
-            continue
-    """
-    for i in tweets_df.values:
-        print("".join(i))
-    quit()
-    q = ["".join(i) for i in tweets_df.values]
-    print(q[:5])
-
-    for index, row in tweets_df.iterrows():
-        tweet = str(row[0])
-        tweets.append(tweet)
-    #tweets = tweets_df.values
-    #print(tweets)
     num_tweets = d.get_num_tweets()
     print("Number of tweets: {}".format(num_tweets))
-    print(tweets[0])
-    #print(type(tweets))
+
+    # build list of tweets from dataframe
+    tweets = ["".join(i) for i in tweets_df.values]
 
     # text => tokens => vectors
     # segment text into char tokens
-    """
-    unique_chars = set()
+    unique_chars = set()  # a set is a collection of unique elements
     for tweet in tweets:
         for char in tweet:
             unique_chars.add(char)
-    """
-
-    # build a set of all unique characters from tweets
-    unique_chars = set()
-    for index, row in tweets_df.iterrows():
-        tweet = str(row["Tweet_Text"])
-        for char in tweet:
-            unique_chars.add(char)
-
     unique_chars = sorted(unique_chars)
-    #unique_chars = sorted(set(tweets))
-    #print(unique_chars)
     print("Number of Unique Chars: {}".format(len(unique_chars)))
 
     # create mapping from unique char -> indices
@@ -158,11 +118,12 @@ if __name__ == "__main__":
     target_seq = []  # all char in chunk, except first
 
     MAX_SENTENCE_LENGTH = 300
+    tweet_str = "".join(tweets)
 
     # convert each char into int using char2idx
-    for chunk in range(0, num_tweets-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
-        inputs = tweets[chunk: chunk+MAX_SENTENCE_LENGTH]
-        targets = tweets[chunk+1: chunk+1+MAX_SENTENCE_LENGTH]
+    for chunk in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
+        inputs = tweet_str[chunk: chunk+MAX_SENTENCE_LENGTH]
+        targets = tweet_str[chunk+1: chunk+1+MAX_SENTENCE_LENGTH]
 
         input_seq.append([char2idx[i] for i in inputs])
         target_seq.append([char2idx[t] for t in targets])
