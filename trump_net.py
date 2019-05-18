@@ -88,6 +88,7 @@ if __name__ == "__main__":
     # print out TF version
     print("\nTF version: {}".format(tf.__version__))
 
+    ########################################
     # load dataset
     d = Dataset()
     tweets_df = d.get_tweets_df()  # dataframe
@@ -97,38 +98,42 @@ if __name__ == "__main__":
     # build list of tweets from dataframe
     tweets = ["".join(i) for i in tweets_df.values]
 
+    # convert tweet list to one long string since a string is a char list
+    tweet_str = "".join(tweets)
+
     # text => tokens => vectors
     # segment text into char tokens
-    unique_chars = set()  # a set is a collection of unique elements
-    for tweet in tweets:
-        for char in tweet:
-            unique_chars.add(char)
-    unique_chars = sorted(unique_chars)
+    unique_chars = sorted(set(tweet_str))
     print("Number of Unique Chars: {}".format(len(unique_chars)))
 
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
-    print(char2idx)
+    #print(char2idx)
 
     # create mapping from indices -> unique char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
-    print(idx2char)
+    #print(idx2char)
 
-    input_seq = []  # all char in chunk, except last
-    target_seq = []  # all char in chunk, except first
+    # list of sequences of indices
+    input_seq = []
+    target_seq = []
 
     MAX_SENTENCE_LENGTH = 300
-    tweet_str = "".join(tweets)
 
-    # convert each char into int using char2idx
-    for chunk in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
-        inputs = tweet_str[chunk: chunk+MAX_SENTENCE_LENGTH]
-        targets = tweet_str[chunk+1: chunk+1+MAX_SENTENCE_LENGTH]
+    # build lists of sequences of indices
+    for i in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
+        # create batches of char (i.e. list of char)
+        inputs = tweet_str[i: i+MAX_SENTENCE_LENGTH]  # all char in chunk, except last
+        targets = tweet_str[i+1: i+1+MAX_SENTENCE_LENGTH]  # all char in chunk, except first
 
+        # convert each char into int using char2idx
         input_seq.append([char2idx[i] for i in inputs])
         target_seq.append([char2idx[t] for t in targets])
 
+    # shape: (x, MAX_SENTENCE_LENGTH) where x is number of index sequences
     print("Shape of input sequence: {}".format(str(np.array(input_seq).shape)))
     print("Shape of target sequence: {}".format(str(np.array(target_seq).shape)))
+
+    ########################################
 
 
