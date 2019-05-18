@@ -101,10 +101,12 @@ if __name__ == "__main__":
     # convert tweet list to one long string since a string is a char list
     tweet_str = "".join(tweets)
 
-    # text => tokens => vectors
-    # segment text into char tokens
+    # text string => char tokens => vectors of int (1-dimensional arrays) => Model
+    # segment text string into char tokens
+    # then convert each char to int
+    # feed arrays of int to the model
     unique_chars = sorted(set(tweet_str))
-    print("Number of Unique Chars: {}".format(len(unique_chars)))
+    print("Number of unique chars: {}".format(len(unique_chars)))
 
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
@@ -115,8 +117,8 @@ if __name__ == "__main__":
     #print(idx2char)
 
     # list of sequences of indices
-    input_seq = []
-    target_seq = []
+    input_seqs = []
+    target_seqs = []
 
     MAX_SENTENCE_LENGTH = 300
 
@@ -127,12 +129,12 @@ if __name__ == "__main__":
         targets = tweet_str[i+1: i+1+MAX_SENTENCE_LENGTH]  # all char in chunk, except first
 
         # convert each char into int using char2idx
-        input_seq.append([char2idx[i] for i in inputs])
-        target_seq.append([char2idx[t] for t in targets])
+        input_seqs.append([char2idx[i] for i in inputs])
+        target_seqs.append([char2idx[t] for t in targets])
 
     # shape: (x, MAX_SENTENCE_LENGTH) where x is number of index sequences
-    print("Shape of input sequence: {}".format(str(np.array(input_seq).shape)))
-    print("Shape of target sequence: {}".format(str(np.array(target_seq).shape)))
+    print("Shape of input sequence: {}".format(str(np.array(input_seqs).shape)))
+    print("Shape of target sequence: {}".format(str(np.array(target_seqs).shape)))
 
     ########################################
 
