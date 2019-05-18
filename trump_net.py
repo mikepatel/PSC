@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 
 import tensorflow as tf
+from tensorflow.keras import Model
 
 
 ################################################################################
@@ -91,6 +92,12 @@ class Dataset:
 
 
 ################################################################################
+class RNN(Model):
+    def __init__(self):
+        super(Model, self).__init__()
+
+
+################################################################################
 # Main
 if __name__ == "__main__":
     # print out TF version
@@ -135,7 +142,7 @@ if __name__ == "__main__":
         inputs = tweet_str[i: i+MAX_SENTENCE_LENGTH]  # all char in chunk, except last
         targets = tweet_str[i+1: i+1+MAX_SENTENCE_LENGTH]  # all char in chunk, except first
 
-        # convert each char into int using char2idx
+        # convert each char in batch to int using char2idx
         input_seqs.append([char2idx[i] for i in inputs])
         target_seqs.append([char2idx[t] for t in targets])
 
@@ -149,5 +156,6 @@ if __name__ == "__main__":
     input_data = input_data.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
     ########################################
+    # Model
 
 
