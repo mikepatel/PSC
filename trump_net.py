@@ -44,7 +44,7 @@ class Dataset:
 
     # perform preprocessing cleaning
     @staticmethod
-    def _clean_tweets(tweet):
+    def _clean_tweet(tweet):
         # remove url links in tweet text
         tweet = re.sub(
             "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*,]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
@@ -65,20 +65,20 @@ class Dataset:
     def _create_clean_csv(self):
         dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset.csv")
         column_header = "Tweet_Text"
-        tweets_df = pd.read_csv(dataset_csv, usecols=[column_header])
+        in_df = pd.read_csv(dataset_csv, usecols=[column_header])
         _temp = []
 
-        for index, row in tweets_df.iterrows():
+        for index, row in in_df.iterrows():
             tweet = row[column_header]
-            tweet = self._clean_tweets(tweet)
+            tweet = self._clean_tweet(tweet)
             _temp.append(tweet)
 
         # write cleaned tweets to a new csv
         dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
-        temp_df = pd.DataFrame(_temp)
-        temp_df.replace("", np.nan, inplace=True)  # replace empty string cells with np.nan
-        temp_df = temp_df.dropna()  # drop np.nan cells
-        temp_df.to_csv(dataset_clean_csv, header=[column_header], index=None)
+        out_df = pd.DataFrame(_temp)
+        out_df.replace("", np.nan, inplace=True)  # replace empty string cells with np.nan
+        out_df = out_df.dropna()  # drop np.nan cells
+        out_df.to_csv(dataset_clean_csv, header=[column_header], index=None)
         return dataset_clean_csv
 
     # get dataframe of cleaned tweets
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # segment text string into char tokens
     # then convert each char to int
     # feed arrays of int to the model
-    unique_chars = sorted(set(tweet_str))
+    unique_chars = sorted(set(tweet_str))  # a set is a collection of unique elements
     print("Number of unique chars: {}".format(len(unique_chars)))
 
     # create mapping from unique char -> indices
