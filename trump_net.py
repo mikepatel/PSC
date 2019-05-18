@@ -12,16 +12,24 @@ Dataset: Trump tweets from https://www.kaggle.com/kingburrito666/better-donald-t
 Notes:
     - using tf.keras and eager execution
     - character based model
+    - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
 
 """
 ################################################################################
 # Imports
-import tensorflow as tf
-
 import os
 import re
 import numpy as np
 import pandas as pd
+
+import tensorflow as tf
+
+
+################################################################################
+# Hyperparameters
+MAX_SENTENCE_LENGTH = 300
+BUFFER_SIZE = 10000
+BATCH_SIZE = 256
 
 
 ################################################################################
@@ -121,10 +129,6 @@ if __name__ == "__main__":
     input_seqs = []
     target_seqs = []
 
-    MAX_SENTENCE_LENGTH = 300
-    BUFFER_SIZE = 10000
-    BATCH_SIZE = 256
-
     # build lists of sequences of indices
     for i in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
         # create batches of char (i.e. list of char)
@@ -139,7 +143,7 @@ if __name__ == "__main__":
     print("Shape of input sequence: {}".format(str(np.array(input_seqs).shape)))
     print("Shape of target sequence: {}".format(str(np.array(target_seqs).shape)))
 
-    # use tf.data.Dataset to create batches and shuffle
+    # use tf.data.Dataset to create batches and shuffle => TF Model
     input_data = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
     input_data = input_data.shuffle(buffer_size=BUFFER_SIZE)
     input_data = input_data.batch(batch_size=BATCH_SIZE, drop_remainder=True)
