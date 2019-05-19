@@ -6,12 +6,13 @@ TF 1.12.0
 
 Project Description:
     - Text Generator modelling using RNNs
+    - Predict the next character in a sequence
 
 Dataset: Trump tweets from https://www.kaggle.com/kingburrito666/better-donald-trump-tweets/version/2
 
 Notes:
     - using tf.keras and eager execution
-    - character based model
+    - character based RNN model
     - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
 
 """
@@ -101,6 +102,9 @@ class RNN(Model):
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # Eager Execution
+    tf.enable_eager_execution()
+
     # print out TF version
     print("\nTF version: {}".format(tf.__version__))
 
@@ -144,14 +148,16 @@ if __name__ == "__main__":
         targets = tweet_str[i+1: i+1+MAX_SENTENCE_LENGTH]  # all char in chunk, except first
 
         # convert each char in batch to int using char2idx
-        input_seqs.append([char2idx[i] for i in inputs])
-        target_seqs.append([char2idx[t] for t in targets])
+        input_seqs.append([char2idx[i] for i in inputs])  # as int
+        target_seqs.append([char2idx[t] for t in targets])  # as int
 
     # shape: (x, MAX_SENTENCE_LENGTH) where x is number of index sequences
     print("Shape of input sequence: {}".format(str(np.array(input_seqs).shape)))
     print("Shape of target sequence: {}".format(str(np.array(target_seqs).shape)))
 
     # use tf.data.Dataset to create batches and shuffle => TF Model
+    # features => input_seqs
+    # labels => target_seqs
     input_data = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
     input_data = input_data.shuffle(buffer_size=BUFFER_SIZE)
     input_data = input_data.batch(batch_size=BATCH_SIZE, drop_remainder=True)
