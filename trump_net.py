@@ -24,14 +24,13 @@ import numpy as np
 import pandas as pd
 
 import tensorflow as tf
-from tensorflow.keras import Model
 
 
 ################################################################################
 # Hyperparameters
-MAX_SENTENCE_LENGTH = 300
+MAX_SEQ_LENGTH = 300
 BUFFER_SIZE = 10000
-BATCH_SIZE = 256
+BATCH_SIZE = 64
 
 
 ################################################################################
@@ -94,15 +93,24 @@ class Dataset:
 
 ################################################################################
 # ML Model
-class RNN(Model):
+class Model(tf.keras.Model):
     def __init__(self):
         super(Model, self).__init__()
+
+        # Layer 1
+
+        # Layer 2
+
+        # Layer 3
+
+    #
+    def call(self, inputs):
+
 
 
 ################################################################################
 # Main
 if __name__ == "__main__":
-    # Eager Execution
     tf.enable_eager_execution()
 
     # print out TF version
@@ -121,6 +129,7 @@ if __name__ == "__main__":
 
     # convert tweet list to one long string since a string is a char list
     tweet_str = "".join(tweets)
+    print("Length of text: {}".format(len(tweet_str)))
 
     # text string => char tokens => vectors of int (1-dimensional arrays) => Model
     # segment text string into char tokens
@@ -131,21 +140,19 @@ if __name__ == "__main__":
 
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
-    # print(char2idx)
 
     # create mapping from indices -> unique char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
-    # print(idx2char)
 
     # list of sequences of indices
     input_seqs = []
     target_seqs = []
 
     # build lists of sequences of indices
-    for i in range(0, len(tweet_str)-MAX_SENTENCE_LENGTH, MAX_SENTENCE_LENGTH):
+    for i in range(0, len(tweet_str)-MAX_SEQ_LENGTH, MAX_SEQ_LENGTH):
         # create batches of char (i.e. list of char)
-        inputs = tweet_str[i: i+MAX_SENTENCE_LENGTH]  # all char in chunk, except last
-        targets = tweet_str[i+1: i+1+MAX_SENTENCE_LENGTH]  # all char in chunk, except first
+        inputs = tweet_str[i: i+MAX_SEQ_LENGTH]  # all char in chunk, except last
+        targets = tweet_str[i+1: i+1+MAX_SEQ_LENGTH]  # all char in chunk, except first
 
         # convert each char in batch to int using char2idx
         input_seqs.append([char2idx[i] for i in inputs])  # as int
@@ -158,9 +165,11 @@ if __name__ == "__main__":
     # use tf.data.Dataset to create batches and shuffle => TF Model
     # features => input_seqs
     # labels => target_seqs
-    input_data = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
-    input_data = input_data.shuffle(buffer_size=BUFFER_SIZE)
-    input_data = input_data.batch(batch_size=BATCH_SIZE, drop_remainder=True)
+    sequences = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
+    sequences = sequences.shuffle(buffer_size=BUFFER_SIZE)
+    sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
+
+    print(sequences)
 
     ########################################
     # Model
