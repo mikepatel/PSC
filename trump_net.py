@@ -131,7 +131,12 @@ class Model(tf.keras.Model):
     def call(self, inputs):
         inputs = self.embedding(inputs)
 
-        return outputs
+        h, states = self.gru(inputs)
+        h = tf.reshape(h, (-1, h.shape[2]))
+
+        outputs = self.fc(h)
+
+        return outputs, states
 
 
 ################################################################################
