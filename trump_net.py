@@ -14,6 +14,7 @@ Notes:
     - using tf.keras and eager execution
     - character based RNN model
     - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
+    - https://www.tensorflow.org/tutorials/sequences/text_generation
 
 """
 ################################################################################
@@ -98,10 +99,24 @@ class Model(tf.keras.Model):
         super(Model, self).__init__()
 
         # Layer 1
+        self.embedding = tf.keras.layers.Embedding(
+            input_dim=VOCAB_SIZE,
+            output_dim=EMBEDDING_DIM
+        )
 
         # Layer 2
+        # check for GPU
+        if tf.test.is_gpu_available():
+            self.gru = tf.keras.layers.CuDNNGRU(
+
+            )
+        else:
+            self.gru = tf.keras.layers.GRU(
+
+            )
 
         # Layer 3
+        self.fc = tf.keras.layers.Dense(VOCAB_SIZE)
 
     #
     def call(self, inputs):
