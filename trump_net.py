@@ -95,6 +95,7 @@ class Dataset:
 ################################################################################
 # ML Model
 class Model(tf.keras.Model):
+    # implement model layers
     def __init__(self, vocab_size, embedding_dim, num_rnn_units):
         super(Model, self).__init__()
 
@@ -123,9 +124,11 @@ class Model(tf.keras.Model):
         # Layer 3: Fully Connected
         self.fc = tf.keras.layers.Dense(vocab_size)
 
-    # forward pass
+    # implement forward pass
     def call(self, inputs):
         inputs = self.embedding(inputs)
+
+        return outputs
 
 
 ################################################################################
