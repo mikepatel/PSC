@@ -28,7 +28,7 @@ import tensorflow as tf
 
 
 ################################################################################
-# Hyperparameters
+# Model hyperparameters
 MAX_SEQ_LENGTH = 300
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
@@ -95,32 +95,37 @@ class Dataset:
 ################################################################################
 # ML Model
 class Model(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, vocab_size, embedding_dim, num_rnn_units):
         super(Model, self).__init__()
 
-        # Layer 1
+        # Layer 1: Embedding
+        # An embedding transforms positive ints (indices) into dense vectors of floats
         self.embedding = tf.keras.layers.Embedding(
-            input_dim=VOCAB_SIZE,
-            output_dim=EMBEDDING_DIM
+            input_dim=vocab_size,  # max int number + 1
+            output_dim=embedding_dim  # dimension of dense embedding
         )
 
-        # Layer 2
+        # Layer 2: GRU
         # check for GPU
         if tf.test.is_gpu_available():
             self.gru = tf.keras.layers.CuDNNGRU(
-
+                units=num_rnn_units,  # dimensionality of output space
+                return_sequences=True,  # return full sequence
+                return_state=True  # return last state and output
             )
         else:
             self.gru = tf.keras.layers.GRU(
-
+                units=num_rnn_units,
+                return_sequences=True,
+                return_state=True
             )
 
-        # Layer 3
-        self.fc = tf.keras.layers.Dense(VOCAB_SIZE)
+        # Layer 3: Fully Connected
+        self.fc = tf.keras.layers.Dense(vocab_size)
 
-    #
+    # forward pass
     def call(self, inputs):
-
+        inputs = self.embedding(inputs)
 
 
 ################################################################################
