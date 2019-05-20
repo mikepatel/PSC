@@ -32,6 +32,9 @@ import tensorflow as tf
 MAX_SEQ_LENGTH = 300
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
+VOCAB_SIZE = 0  # redefined later in code
+EMBEDDING_DIM = 256
+NUM_RNN_UNITS = 1024
 
 
 ################################################################################
@@ -160,6 +163,7 @@ if __name__ == "__main__":
     # feed arrays of int to the model
     unique_chars = sorted(set(tweet_str))  # a set is a collection of unique elements
     print("Number of unique chars: {}".format(len(unique_chars)))
+    VOCAB_SIZE = len(unique_chars)
 
     # create mapping from unique char -> indices
     char2idx = {u: i for i, u in enumerate(unique_chars)}
@@ -196,3 +200,8 @@ if __name__ == "__main__":
 
     ########################################
     # Model
+    m = Model(
+        vocab_size=VOCAB_SIZE,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS
+    )
