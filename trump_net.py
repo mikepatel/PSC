@@ -15,6 +15,8 @@ Notes:
     - character based RNN model
     - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
     - https://www.tensorflow.org/tutorials/sequences/text_generation
+    - compare GRU vs LSTM
+    - compare Model vs build_model()
 
 """
 ################################################################################
@@ -23,6 +25,7 @@ import os
 import re
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 import tensorflow as tf
 
@@ -35,6 +38,7 @@ BATCH_SIZE = 64
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
+NUM_EPOCHS = 3
 
 
 ################################################################################
@@ -125,7 +129,7 @@ class Model(tf.keras.Model):
             )
 
         # Layer 3: Fully Connected
-        self.fc = tf.keras.layers.Dense(vocab_size)
+        self.fc = tf.keras.layers.Dense(vocab_size)  # vocab size outputs
 
     # implement forward pass
     def call(self, inputs):
@@ -203,10 +207,42 @@ if __name__ == "__main__":
 
     print(sequences)
 
+
     ########################################
     # Model
     m = Model(
         vocab_size=VOCAB_SIZE,
         embedding_dim=EMBEDDING_DIM,
         num_rnn_units=NUM_RNN_UNITS
+    )
+
+    #m.summary()
+
+    # loss function
+    def loss_fn(labels, logits):
+        return tf.keras.losses.sparse_categorical_crossentropy(
+            labels=labels,
+            logits=logits,
+            from_logits=True
+        )
+
+    m.compile(
+        loss=loss_fn,
+        optimizer=tf.train.AdamOptimizer(),
+        metrics=["accuracy"]
+    )
+
+    #m.summary()
+
+    checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
+    history_file = os.path.join(checkpoint_dir, "rnn.h5")
+    save_callback = tf.keras.callbacks.ModelCheckpoint(filepath=history_file, verbose=1)
+    tb_callback = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
+
+    history = m.fit(
+        x=sequences,
+        epochs=NUM_EPOCHS,
+        callbacks=[save_callback, tb_callback],
+        steps_per_epoch=len(tweet_str)//MAX_SEQ_LENGTH//BATCH_SIZE,
+        verbose=1
     )
