@@ -143,15 +143,15 @@ def generate(model, start_char):
     model.reset_states()
 
     for i in range(NUM_GENERATE):
-        preds = model(input_eval)
-        preds = tf.squeeze(preds, 0)
+        predictions = model(input_eval)
+        predictions = tf.squeeze(predictions, 0)
 
-        preds = preds / temperature
-        preds_id = tf.multinomial(preds, num_samples=1)[-1, 0].numpy()
+        predictions = predictions / temperature
+        predictions_id = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
 
-        input_eval = tf.expand_dims([preds_id], 0)
+        input_eval = tf.expand_dims([predictions_id], 0)
 
-        text_gen.append(idx2char[preds_id])
+        text_gen.append(idx2char[predictions_id])
 
     return start_char + "".join(text_gen)
 
@@ -265,6 +265,7 @@ if __name__ == "__main__":
     )
 
     ########################################
+    # Generate Output
     # run model with different batch size, so need to rebuild model
     m = build_model(
         vocab_size=VOCAB_SIZE,
@@ -275,7 +276,7 @@ if __name__ == "__main__":
     m.load_weights(tf.train.latest_checkpoint(checkpoint_dir=checkpoint_dir))
     m.build(tf.TensorShape([1, None]))
     m.summary()
-    
+
     gen_tweet = generate(model=m, start_char="M")
 
     print("\n################################################################################")
