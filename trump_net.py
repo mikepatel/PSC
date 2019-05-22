@@ -39,7 +39,7 @@ BATCH_SIZE = 64
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 1
+NUM_EPOCHS = 10
 
 
 ################################################################################
@@ -102,13 +102,13 @@ class Dataset:
 
 ################################################################################
 # ML Model
-def build_model(vocab_size, embedding_dim, num_rnn_units):
+def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
     model = tf.keras.Sequential()
 
     model.add(tf.keras.layers.Embedding(
         input_dim=vocab_size,
         output_dim=embedding_dim,
-        batch_size=BATCH_SIZE
+        batch_size=batch_size
     ))
 
     if tf.test.is_gpu_available():
@@ -136,7 +136,6 @@ def build_model(vocab_size, embedding_dim, num_rnn_units):
 def generate(model, start_char):
     input_eval = [char2idx[s] for s in start_char]
     input_eval = tf.expand_dims(input_eval, 0)
-    print(input_eval)
 
     text_gen = []
 
@@ -227,7 +226,8 @@ if __name__ == "__main__":
     m = build_model(
         vocab_size=VOCAB_SIZE,
         embedding_dim=EMBEDDING_DIM,
-        num_rnn_units=NUM_RNN_UNITS
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=BATCH_SIZE
     )
 
     m.summary()
@@ -245,8 +245,13 @@ if __name__ == "__main__":
     )
 
     checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
-    history_file = os.path.join(checkpoint_dir, "rnn.h5")
-    save_callback = tf.keras.callbacks.ModelCheckpoint(filepath=history_file, verbose=1)
+    print(checkpoint_dir)
+    history_file = os.path.join(checkpoint_dir, "checkpoint_{epoch}")
+    save_callback = tf.keras.callbacks.ModelCheckpoint(
+        filepath=history_file,
+        save_weights_only=True,
+        verbose=1
+    )
     tb_callback = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
 
     history = m.fit(
@@ -257,4 +262,15 @@ if __name__ == "__main__":
         verbose=1
     )
 
-    print(generate(model=m, start_char="romeo: "))
+    # run model with different batch size, so need to rebuild model
+    m = build_model(
+        vocab_size=VOCAB_SIZE,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=1  #
+    )
+    m.load_weights(tf.train.latest_checkpoint(checkpoint_dir=checkpoint_dir))
+    m.build(tf.TensorShape([1, None]))
+    m.summary()
+    print("\n################################################################################")
+    print(generate(model=m, start_char="m"))
