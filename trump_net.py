@@ -33,12 +33,13 @@ import tensorflow as tf
 ################################################################################
 # Model hyperparameters
 MAX_SEQ_LENGTH = 300
+NUM_GENERATE = 280  # tweet length is 280 characters
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 3
+NUM_EPOCHS = 1
 
 
 ################################################################################
@@ -128,6 +129,33 @@ def build_model(vocab_size, embedding_dim, num_rnn_units):
     ))
 
     return model
+
+
+################################################################################
+#
+def generate(model, start_char):
+    input_eval = [char2idx[s] for s in start_char]
+    input_eval = tf.expand_dims(input_eval, 0)
+    print(input_eval)
+
+    text_gen = []
+
+    temperature = 1.0
+
+    model.reset_states()
+
+    for i in range(NUM_GENERATE):
+        preds = model(input_eval)
+        preds = tf.squeeze(preds, 0)
+
+        preds = preds / temperature
+        preds_id = tf.multinomial(preds, num_samples=1)[-1, 0].numpy()
+
+        input_eval = tf.expand_dims([preds_id], 0)
+
+        text_gen.append(idx2char[preds_id])
+
+    return start_char + "".join(text_gen)
 
 
 ################################################################################
@@ -228,3 +256,5 @@ if __name__ == "__main__":
         steps_per_epoch=len(tweet_str)//MAX_SEQ_LENGTH//BATCH_SIZE,
         verbose=1
     )
+
+    print(generate(model=m, start_char="romeo: "))
