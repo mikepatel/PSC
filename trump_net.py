@@ -202,6 +202,8 @@ if __name__ == "__main__":
         num_rnn_units=NUM_RNN_UNITS
     )
 
+    m.summary()
+
     # loss function
     def loss_fn(labels, logits):
         return tf.losses.sparse_softmax_cross_entropy(
@@ -214,15 +216,13 @@ if __name__ == "__main__":
         optimizer=tf.train.AdamOptimizer()
     )
 
-    m.summary()
-
     checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
     history_file = os.path.join(checkpoint_dir, "rnn.h5")
     save_callback = tf.keras.callbacks.ModelCheckpoint(filepath=history_file, verbose=1)
     tb_callback = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
 
     history = m.fit(
-        x=sequences,
+        x=sequences.repeat(),
         epochs=NUM_EPOCHS,
         callbacks=[save_callback, tb_callback],
         steps_per_epoch=len(tweet_str)//MAX_SEQ_LENGTH//BATCH_SIZE,
