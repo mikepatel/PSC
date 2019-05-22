@@ -101,46 +101,33 @@ class Dataset:
 
 ################################################################################
 # ML Model
-class Model(tf.keras.Model):
-    # implement model layers
-    def __init__(self, vocab_size, embedding_dim, num_rnn_units):
-        super(Model, self).__init__()
+def build_model(vocab_size, embedding_dim, num_rnn_units):
+    model = tf.keras.Sequential()
 
-        # Layer 1: Embedding
-        # An embedding transforms positive ints (indices) into dense vectors of floats
-        self.embedding = tf.keras.layers.Embedding(
-            input_dim=vocab_size,  # max int number + 1
-            output_dim=embedding_dim  # dimension of dense embedding
-        )
+    model.add(tf.keras.layers.Embedding(
+        input_dim=vocab_size,
+        output_dim=embedding_dim,
+        batch_size=BATCH_SIZE
+    ))
 
-        # Layer 2: GRU
-        # check for GPU
-        if tf.test.is_gpu_available():
-            self.gru = tf.keras.layers.CuDNNGRU(
-                units=num_rnn_units,  # dimensionality of output space
-                return_sequences=True,  # return full sequence
-                return_state=True  # return last state and output
-            )
-        else:
-            self.gru = tf.keras.layers.GRU(
-                units=num_rnn_units,
-                return_sequences=True,
-                return_state=True
-            )
+    if tf.test.is_gpu_available():
+        model.add(tf.keras.layers.CuDNNGRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+    else:
+        model.add(tf.keras.layers.GRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
 
-        # Layer 3: Fully Connected
-        self.fc = tf.keras.layers.Dense(vocab_size)  # vocab size outputs
+    model.add(tf.keras.layers.Dense(
+        units=vocab_size
+    ))
 
-    # implement forward pass
-    def call(self, inputs):
-        inputs = self.embedding(inputs)
-
-        h, states = self.gru(inputs)
-        h = tf.reshape(h, (-1, h.shape[2]))
-
-        outputs = self.fc(h)
-
-        return outputs, states
+    return model
 
 
 ################################################################################
@@ -149,7 +136,7 @@ if __name__ == "__main__":
     tf.enable_eager_execution()
 
     # print out TF version
-    print("\nTF version: {}".format(tf.__version__))
+    print("TF version: {}".format(tf.__version__))
 
     ########################################
     # ETL = Extraction, Transformation, Load
@@ -207,32 +194,27 @@ if __name__ == "__main__":
 
     print(sequences)
 
-
     ########################################
     # Model
-    m = Model(
+    m = build_model(
         vocab_size=VOCAB_SIZE,
         embedding_dim=EMBEDDING_DIM,
         num_rnn_units=NUM_RNN_UNITS
     )
 
-    #m.summary()
-
     # loss function
     def loss_fn(labels, logits):
-        return tf.keras.losses.sparse_categorical_crossentropy(
+        return tf.losses.sparse_softmax_cross_entropy(
             labels=labels,
-            logits=logits,
-            from_logits=True
+            logits=logits
         )
 
     m.compile(
         loss=loss_fn,
-        optimizer=tf.train.AdamOptimizer(),
-        metrics=["accuracy"]
+        optimizer=tf.train.AdamOptimizer()
     )
 
-    #m.summary()
+    m.summary()
 
     checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
     history_file = os.path.join(checkpoint_dir, "rnn.h5")
