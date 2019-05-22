@@ -16,7 +16,6 @@ Notes:
     - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
     - https://www.tensorflow.org/tutorials/sequences/text_generation
     - compare GRU vs LSTM
-    - compare Model vs build_model()
 
 """
 ################################################################################
@@ -39,7 +38,7 @@ BATCH_SIZE = 64
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 10
+NUM_EPOCHS = 500
 
 
 ################################################################################
@@ -101,7 +100,7 @@ class Dataset:
 
 
 ################################################################################
-# ML Model
+# RNN
 def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
     model = tf.keras.Sequential()
 
@@ -132,14 +131,14 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
 
 
 ################################################################################
-#
+# generate text
 def generate(model, start_char):
     input_eval = [char2idx[s] for s in start_char]
     input_eval = tf.expand_dims(input_eval, 0)
 
     text_gen = []
 
-    temperature = 1.0
+    temperature = 0.8
 
     model.reset_states()
 
@@ -160,6 +159,7 @@ def generate(model, start_char):
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # enable eager execution
     tf.enable_eager_execution()
 
     # print out TF version
@@ -244,6 +244,7 @@ if __name__ == "__main__":
         optimizer=tf.train.AdamOptimizer()
     )
 
+    # callbacks for checkpoints, TensorBoard
     checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
     print(checkpoint_dir)
     history_file = os.path.join(checkpoint_dir, "checkpoint_{epoch}")
@@ -254,6 +255,7 @@ if __name__ == "__main__":
     )
     tb_callback = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
 
+    # train model
     history = m.fit(
         x=sequences.repeat(),
         epochs=NUM_EPOCHS,
@@ -262,6 +264,7 @@ if __name__ == "__main__":
         verbose=1
     )
 
+    ########################################
     # run model with different batch size, so need to rebuild model
     m = build_model(
         vocab_size=VOCAB_SIZE,
@@ -272,5 +275,9 @@ if __name__ == "__main__":
     m.load_weights(tf.train.latest_checkpoint(checkpoint_dir=checkpoint_dir))
     m.build(tf.TensorShape([1, None]))
     m.summary()
+    
+    gen_tweet = generate(model=m, start_char="M")
+
     print("\n################################################################################")
-    print(generate(model=m, start_char="m"))
+    print("GENERATED TWEET: ")
+    print(gen_tweet)
