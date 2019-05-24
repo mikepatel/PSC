@@ -8,14 +8,22 @@ Project Description:
     - Text Generator modelling using RNNs
     - Predict the next character in a sequence
 
-Dataset: Trump tweets from https://www.kaggle.com/kingburrito666/better-donald-trump-tweets/version/2
+Datasets: Trump tweets from
+    - https://www.kaggle.com/kingburrito666/better-donald-trump-tweets/version/2 (~7k)
+    - http://www.trumptwitterarchive.com/archive (~35k)
 
 Notes:
     - using tf.keras and eager execution
     - character based RNN model
     - https://www.tensorflow.org/versions/r1.12/api_docs/python/tf/data/Dataset
     - https://www.tensorflow.org/tutorials/sequences/text_generation
+
+Things to examine:
     - compare GRU vs LSTM
+    - number of layers for GRU/LSTM: 1, 2, 3
+    - compare character-based vs word-based model
+    - different data sets
+    - dropout:
 
 """
 ################################################################################
@@ -31,25 +39,27 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 280
+MAX_SEQ_LENGTH = 300
 NUM_GENERATE = 280  # tweet length is 280 characters
 BUFFER_SIZE = 10000
 BATCH_SIZE = 128
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 300
+NUM_EPOCHS = 50
 
 
 ################################################################################
 # Data Preprocessing
 class Dataset:
     def __init__(self):
+        self.encoding = "windows-1252"
+
         # create csv after cleaning tweets dataset
         clean_csv = self._create_clean_csv()
 
         # create tweets dataframe object
-        self.tweets_df = pd.read_csv(clean_csv)
+        self.tweets_df = pd.read_csv(clean_csv, encoding=self.encoding)
 
     # perform preprocessing cleaning
     @staticmethod
@@ -68,13 +78,24 @@ class Dataset:
             tweet
         ).strip()
 
+        # remove 'amp;' in tweet text
+        tweet = re.sub(
+            "amp;",
+            "",
+            tweet
+        ).strip()
+
         return tweet
 
     # preprocess tweets and write output to csv
     def _create_clean_csv(self):
-        dataset_csv = os.path.join(os.getcwd(), "DonaldTrumpTweetsDataset.csv")
+        input_csv = "DonaldTrumpTweetsDataset.csv"
+        input_csv = "Trump_Twitter_Archive.csv"
+
         column_header = "Tweet_Text"
-        in_df = pd.read_csv(dataset_csv, usecols=[column_header])
+
+        dataset_csv = os.path.join(os.getcwd(), input_csv)
+        in_df = pd.read_csv(dataset_csv, usecols=[column_header], encoding=self.encoding)
         _temp = []
 
         for index, row in in_df.iterrows():
@@ -87,7 +108,7 @@ class Dataset:
         out_df = pd.DataFrame(_temp)
         out_df.replace("", np.nan, inplace=True)  # replace empty string cells with np.nan
         out_df = out_df.dropna()  # drop np.nan cells
-        out_df.to_csv(dataset_clean_csv, header=[column_header], index=None)
+        out_df.to_csv(dataset_clean_csv, header=[column_header], index=None, encoding=self.encoding)
         return dataset_clean_csv
 
     # get dataframe of cleaned tweets
@@ -172,6 +193,8 @@ if __name__ == "__main__":
     tweets_df = d.get_tweets_df()  # dataframe
     num_tweets = d.get_num_tweets()
     print("Number of tweets: {}".format(num_tweets))
+
+    quit()
 
     # build list of tweets from dataframe
     tweets = ["".join(i) for i in tweets_df.values]
