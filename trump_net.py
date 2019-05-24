@@ -31,14 +31,14 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 300
+MAX_SEQ_LENGTH = 280
 NUM_GENERATE = 280  # tweet length is 280 characters
 BUFFER_SIZE = 10000
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 VOCAB_SIZE = 0  # redefined later in code
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 500
+NUM_EPOCHS = 300
 
 
 ################################################################################
@@ -281,4 +281,5 @@ if __name__ == "__main__":
 
     print("\n################################################################################")
     print("GENERATED TWEET: ")
-    print(gen_tweet)
+    print("\"" + gen_tweet + "\"")
+    print("################################################################################")
