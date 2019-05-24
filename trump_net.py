@@ -159,7 +159,7 @@ def generate(model, start_char):
 
     text_gen = []
 
-    temperature = 0.8
+    temperature = 0.3
 
     model.reset_states()
 
@@ -193,8 +193,6 @@ if __name__ == "__main__":
     tweets_df = d.get_tweets_df()  # dataframe
     num_tweets = d.get_num_tweets()
     print("Number of tweets: {}".format(num_tweets))
-
-    quit()
 
     # build list of tweets from dataframe
     tweets = ["".join(i) for i in tweets_df.values]
