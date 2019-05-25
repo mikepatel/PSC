@@ -5,9 +5,7 @@ The Passive Sign Convention project is a partnership between two friends, John a
 <img src="https://i.groupme.com/568x374.jpeg.555fef18f7b24608bfb2aa93cbc0a4b2.large" alt="PSC Logo" width="500"/>
 
 ## Instructions
-```
-$ python trump_net.py
-```
+* Coming Soon!
 
 ## Results
 * Coming Soon!
