@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2701b5fc-02c6-434b-96ab-03bc7ee44019" name="Default Changelist" comment="" />
+    <list default="true" id="2701b5fc-02c6-434b-96ab-03bc7ee44019" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="686">
-              <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
+            <state relative-caret-position="646">
+              <caret line="78" column="53" selection-start-line="78" selection-start-column="53" selection-end-line="78" selection-end-column="53" />
               <folding>
                 <element signature="e#289#298#0" expanded="true" />
               </folding>
@@ -135,8 +137,8 @@
     <entry file="file://$PROJECT_DIR$/Text Generation/remove_page_numbers.py" />
     <entry file="file://$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
+        <state relative-caret-position="646">
+          <caret line="78" column="53" selection-start-line="78" selection-start-column="53" selection-end-line="78" selection-end-column="53" />
           <folding>
             <element signature="e#289#298#0" expanded="true" />
           </folding>
