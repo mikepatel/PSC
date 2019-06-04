@@ -32,7 +32,7 @@ BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 50
+NUM_EPOCHS = 500
 NUM_CHAR_GEN = 1000  # number of generated characters
 
 
@@ -146,7 +146,7 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 1.0
+    temperature = 0.1
 
     model.reset_states()
 
@@ -261,4 +261,9 @@ if __name__ == "__main__":
     m.summary()
 
     generated = generate(model=m, start_string="John ")
+
+    print("\n################################################################################")
+    print("GENERATED OUTPUT: ")
+    print("\"" + generated + "\"")
+    print("################################################################################")
 
