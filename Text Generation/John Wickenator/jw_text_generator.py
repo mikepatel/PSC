@@ -28,6 +28,8 @@ import tensorflow as tf
 ################################################################################
 # Model hyperparameters
 MAX_SEQ_LENGTH = 500
+BUFFER_SIZE = 10000
+BATCH_SIZE = 64
 
 
 ################################################################################
@@ -104,6 +106,12 @@ if __name__ == "__main__":
     # shape: (n, MAX_SEQ_LENGTH) where n is the number of index sequences
     print("Shape of input sequences: {}".format(str(np.array(input_seqs).shape)))
     print("Shape of target sequences: {}".format(str(np.array(target_seqs).shape)))
+
+    # use tf.data.Dataset to create batches and shuffle => TF model
+    # (features, labels) === (input_seqs, target_seqs)
+    sequences = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
+    sequences = sequences.shuffle(buffer_size=BUFFER_SIZE)
+    sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
 
 
