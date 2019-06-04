@@ -30,6 +30,9 @@ import tensorflow as tf
 MAX_SEQ_LENGTH = 500
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
+EMBEDDING_DIM = 256
+NUM_RNN_UNITS = 1024
+NUM_EPOCHS = 50
 
 
 ################################################################################
@@ -72,6 +75,7 @@ if __name__ == "__main__":
     # print out TF version
     print("TF version: {}".format(tf.__version__))
 
+    # ##### ETL ##### #
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
@@ -113,5 +117,12 @@ if __name__ == "__main__":
     sequences = sequences.shuffle(buffer_size=BUFFER_SIZE)
     sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
+    print(sequences)
 
-
+    # ##### MODEL ##### #
+    m = build_model(
+        vocab_size=vocab_size,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=BATCH_SIZE
+    )
