@@ -33,7 +33,7 @@ BATCH_SIZE = 64
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
 NUM_EPOCHS = 100
-NUM_CHAR_GEN = 1000  # number of generated characters
+NUM_CHAR_GEN = 2000  # number of generated characters
 
 
 ################################################################################
@@ -178,6 +178,7 @@ if __name__ == "__main__":
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
+    print("Length of text data: {}".format(len(data)))
 
     # Tokenization: string => char tokens
     unique_chars = sorted(set(data))
