@@ -33,6 +33,7 @@ BATCH_SIZE = 64
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
 NUM_EPOCHS = 50
+NUM_CHAR_GEN = 1000  # number of generated characters
 
 
 ################################################################################
@@ -114,6 +115,57 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
 
 
 ################################################################################
+# Loss function
+def loss_fn(labels, logits):
+    return tf.losses.sparse_softmax_cross_entropy(
+        labels=labels,
+        logits=logits
+    )
+
+
+# Callbacks
+def build_callbacks(checkpoint_dir):
+    history_file = os.path.join(checkpoint_dir, "checkpoint_{epoch}")
+
+    # save callback
+    sc = tf.keras.callbacks.ModelCheckpoint(
+        filepath=history_file,
+        save_weights_only=True,
+        verbose=1
+    )
+
+    tb = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
+
+    return sc, tb
+
+
+# Generate output
+def generate(model, start_string):
+    input_eval = [char2idx[c] for c in start_string]
+    input_eval = tf.expand_dims(input_eval, 0)
+
+    gen_text = []
+
+    temperature = 1.0
+
+    model.reset_states()
+
+    for i in range(NUM_CHAR_GEN):
+        predictions = model(input_eval)
+        predictions = tf.squeeze(predictions, 0)
+
+        predictions /= temperature
+
+        id_predictions = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
+
+        input_eval = tf.expand_dims([id_predictions], 0)
+
+        gen_text.append(idx2char[id_predictions])
+
+    return start_string + "".join(gen_text)
+
+
+################################################################################
 # Main
 if __name__ == "__main__":
     # enable eager execution
@@ -175,3 +227,38 @@ if __name__ == "__main__":
     )
 
     m.summary()
+
+    # loss function and optimizer
+    m.compile(
+        loss=loss_fn,
+        optimizer=tf.train.AdamOptimizer()
+    )
+
+    # callbacks for checkpoints, Tensorboard
+    checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
+    save_callback, tb_callback = build_callbacks(checkpoint_dir)
+
+    # train model
+    history = m.fit(
+        x=sequences.repeat(),
+        epochs=NUM_EPOCHS,
+        callbacks=[save_callback, tb_callback],
+        steps_per_epoch=len(data)//MAX_SEQ_LENGTH//BATCH_SIZE,
+        verbose=1
+    )
+
+    # ##### GENERATE OUTPUT ##### #
+    # run model with different batch size, so need to rebuild model
+    m = build_model(
+        vocab_size=vocab_size,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=1  # seed the model
+    )
+
+    m.load_weights(tf.train.latest_checkpoint(checkpoint_dir=checkpoint_dir))
+    m.build(tf.TensorShape([1, None]))
+    m.summary()
+
+    generated = generate(model=m, start_string="John ")
+
