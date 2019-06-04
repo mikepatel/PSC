@@ -72,6 +72,8 @@ if __name__ == "__main__":
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
+    print(type(data))
+    quit()
 
     # Tokenization: string => char tokens
     unique_chars = sorted(set(data))
@@ -85,6 +87,13 @@ if __name__ == "__main__":
 
     # create mapping from int to char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
+
+    # create input and target sequences
+    input_seqs = []
+    target_seqs = []
+
+    # build list of sequences of indices
+    #for i in range(0, len(data))
 
 
 
