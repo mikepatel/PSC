@@ -27,6 +27,7 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
+MAX_SEQ_LENGTH = 500
 
 
 ################################################################################
@@ -72,8 +73,6 @@ if __name__ == "__main__":
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
-    print(type(data))
-    quit()
 
     # Tokenization: string => char tokens
     unique_chars = sorted(set(data))
@@ -93,7 +92,18 @@ if __name__ == "__main__":
     target_seqs = []
 
     # build list of sequences of indices
-    #for i in range(0, len(data))
+    for i in range(0, len(data)-MAX_SEQ_LENGTH, MAX_SEQ_LENGTH):
+        # create batches of char
+        input_chars = data[i: i+MAX_SEQ_LENGTH]
+        target_chars = data[i+1: i+1+MAX_SEQ_LENGTH]
+
+        # convert each char in batch to int
+        input_seqs.append([char2idx[i] for i in input_chars])
+        target_seqs.append([char2idx[t] for t in target_chars])
+
+    # shape: (n, MAX_SEQ_LENGTH) where n is the number of index sequences
+    print("Shape of input sequences: {}".format(str(np.array(input_seqs).shape)))
+    print("Shape of target sequences: {}".format(str(np.array(target_seqs).shape)))
 
 
 
