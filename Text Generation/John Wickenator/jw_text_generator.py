@@ -31,8 +31,8 @@ MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
-NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 100
+NUM_RNN_UNITS = 2048
+NUM_EPOCHS = 200
 NUM_CHAR_GEN = 2000  # number of generated characters
 
 
@@ -131,6 +131,7 @@ def build_callbacks(checkpoint_dir):
     sc = tf.keras.callbacks.ModelCheckpoint(
         filepath=history_file,
         save_weights_only=True,
+        period=50,
         verbose=1
     )
 
@@ -146,7 +147,7 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 0.1
+    temperature = 1.0
 
     model.reset_states()
 
@@ -267,4 +268,3 @@ if __name__ == "__main__":
     print("GENERATED OUTPUT: ")
     print("\"" + generated + "\"")
     print("################################################################################")
-
