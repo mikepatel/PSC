@@ -30,9 +30,9 @@ import tensorflow as tf
 MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
-EMBEDDING_DIM = 256
-NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 200
+EMBEDDING_DIM = 512
+NUM_RNN_UNITS = 4096
+NUM_EPOCHS = 400
 NUM_CHAR_GEN = 2000  # number of generated characters
 
 
@@ -131,7 +131,7 @@ def build_callbacks(checkpoint_dir):
     sc = tf.keras.callbacks.ModelCheckpoint(
         filepath=history_file,
         save_weights_only=True,
-        period=50,
+        period=100,
         verbose=1
     )
 
