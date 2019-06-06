@@ -31,8 +31,8 @@ MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 512
-NUM_RNN_UNITS = 4096
-NUM_EPOCHS = 400
+NUM_RNN_UNITS = 2048
+NUM_EPOCHS = 200
 NUM_CHAR_GEN = 2000  # number of generated characters
 
 
@@ -52,7 +52,7 @@ class Dataset:
     @staticmethod
     def preprocess(text):
         # remove page numbers at bottom of page and at top right
-        pattern = "Page.*[0-9].|[0-9].*"
+        pattern = "Page.*[0-9].|([0-9]+\.)"
 
         text = re.sub(
             pattern,
@@ -147,7 +147,7 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 1.0
+    temperature = 0.4
 
     model.reset_states()
 
@@ -179,6 +179,7 @@ if __name__ == "__main__":
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
+    #print(data)
     print("Length of text data: {}".format(len(data)))
 
     # Tokenization: string => char tokens
