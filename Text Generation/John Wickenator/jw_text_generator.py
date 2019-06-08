@@ -32,8 +32,9 @@ BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 512
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 200
+NUM_EPOCHS = 1
 NUM_CHAR_GEN = 2000  # number of generated characters
+CHECKPOINT_PERIOD = 1  # how frequently to save checkpoints
 
 
 ################################################################################
@@ -131,7 +132,7 @@ def build_callbacks(checkpoint_dir):
     sc = tf.keras.callbacks.ModelCheckpoint(
         filepath=history_file,
         save_weights_only=True,
-        period=100,
+        period=CHECKPOINT_PERIOD,
         verbose=1
     )
 
@@ -265,7 +266,24 @@ if __name__ == "__main__":
 
     generated = generate(model=m, start_string="John ")
 
+    output_file = os.path.join(checkpoint_dir, "output.txt")
+
+    with open(output_file, "w+") as f:
+        # write hyperparameters
+        f.write("Number of Epochs: {}".format(NUM_EPOCHS))
+        f.write("\nBatch Size: {}".format(BATCH_SIZE))
+        f.write("\nEmbedding Dimension: {}".format(EMBEDDING_DIM))
+        f.write("\nNumber of RNN Units: {}".format(NUM_RNN_UNITS))
+
+        # write generated output
+        f.write("\n\n################################################################################")
+        f.write("\nGENERATED OUTPUT:")
+        f.write("\n" + generated)
+        f.write("\n################################################################################")
+
+    """
     print("\n################################################################################")
     print("GENERATED OUTPUT: ")
     print("\"" + generated + "\"")
     print("################################################################################")
+    """
