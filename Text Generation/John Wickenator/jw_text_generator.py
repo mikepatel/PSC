@@ -32,9 +32,9 @@ BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 512
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 1
+NUM_EPOCHS = 150
 NUM_CHAR_GEN = 2000  # number of generated characters
-CHECKPOINT_PERIOD = 1  # how frequently to save checkpoints
+CHECKPOINT_PERIOD = 50  # how frequently to save checkpoints
 
 
 ################################################################################
