@@ -266,6 +266,7 @@ if __name__ == "__main__":
 
     generated = generate(model=m, start_string="John ")
 
+    # write generated output to text file
     output_file = os.path.join(checkpoint_dir, "output.txt")
 
     with open(output_file, "w+") as f:
