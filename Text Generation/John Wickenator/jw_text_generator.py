@@ -8,6 +8,7 @@ Project Description:
     - Generate our own John Wick-esque script using RNNs!
 
 Datasets:
+    Text file of JW and JW2 scripts
 
 Notes:
 
@@ -32,7 +33,7 @@ BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 150
+NUM_EPOCHS = 100
 NUM_CHAR_GEN = 2000  # number of generated characters
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
