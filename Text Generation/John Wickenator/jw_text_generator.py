@@ -28,7 +28,7 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 30
+MAX_SEQ_LENGTH = 60
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
