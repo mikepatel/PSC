@@ -34,7 +34,7 @@ EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 2048
 NUM_EPOCHS = 150
 NUM_CHAR_GEN = 2000  # number of generated characters
-CHECKPOINT_PERIOD = 50  # how frequently to save checkpoints
+CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 
 ################################################################################
