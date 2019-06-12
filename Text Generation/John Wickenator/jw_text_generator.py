@@ -29,8 +29,8 @@ import tensorflow as tf
 # Model hyperparameters
 MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
-BATCH_SIZE = 64
-EMBEDDING_DIM = 512
+BATCH_SIZE = 32
+EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 2048
 NUM_EPOCHS = 150
 NUM_CHAR_GEN = 2000  # number of generated characters
@@ -125,8 +125,8 @@ def loss_fn(labels, logits):
 
 
 # Callbacks
-def build_callbacks(checkpoint_dir):
-    history_file = os.path.join(checkpoint_dir, "checkpoint_{epoch}")
+def build_callbacks(chkpt_dir):
+    history_file = os.path.join(chkpt_dir, "checkpoint_{epoch}")
 
     # save callback
     sc = tf.keras.callbacks.ModelCheckpoint(
@@ -136,7 +136,8 @@ def build_callbacks(checkpoint_dir):
         verbose=1
     )
 
-    tb = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
+    # TensorBoard callback
+    tb = tf.keras.callbacks.TensorBoard(log_dir=chkpt_dir)
 
     return sc, tb
 
@@ -148,7 +149,7 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 0.4
+    temperature = 0.7
 
     model.reset_states()
 
@@ -180,7 +181,7 @@ if __name__ == "__main__":
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     data = d.get_data()
-    #print(data)
+    # print(data)
     print("Length of text data: {}".format(len(data)))
 
     # Tokenization: string => char tokens
@@ -282,10 +283,3 @@ if __name__ == "__main__":
         f.write("\nGENERATED OUTPUT:")
         f.write("\n" + generated)
         f.write("\n################################################################################")
-
-    """
-    print("\n################################################################################")
-    print("GENERATED OUTPUT: ")
-    print("\"" + generated + "\"")
-    print("################################################################################")
-    """
