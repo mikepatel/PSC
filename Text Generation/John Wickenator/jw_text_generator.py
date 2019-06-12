@@ -29,7 +29,7 @@ import tensorflow as tf
 # Model hyperparameters
 MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 2048
 NUM_EPOCHS = 150
@@ -149,7 +149,7 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 0.7
+    temperature = 0.5
 
     model.reset_states()
 
@@ -240,7 +240,8 @@ if __name__ == "__main__":
     )
 
     # callbacks for checkpoints, Tensorboard
-    checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
+    dir_name = "Results\\" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    checkpoint_dir = os.path.join(os.getcwd(), dir_name)
     save_callback, tb_callback = build_callbacks(checkpoint_dir)
 
     # train model
