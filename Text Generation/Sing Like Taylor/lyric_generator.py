@@ -61,6 +61,7 @@ if __name__ == "__main__":
     # print out TF version
     print("TF version: {}".format(tf.__version__))
 
+    # ----- ETL ----- #
     # ETL = Extraction, Transformation, Load
     d = Dataset()
     df = d.lyrics_df
@@ -84,3 +85,31 @@ if __name__ == "__main__":
 
     # create mapping from int to char
     idx2char = {i: u for i, u in enumerate(unique_chars)}
+
+    # create input and target sequences
+    input_seqs = []
+    target_seqs = []
+
+    # build list of sequences of indices
+    for i in range(0, len(lyrics)-MAX_SEQ_LENGTH, MAX_SEQ_LENGTH):
+        # create batches of char
+        input_chars = lyrics[i: i+MAX_SEQ_LENGTH]
+        target_chars = lyrics[i+1: i+1+MAX_SEQ_LENGTH]
+
+        # convert each char in batch to int
+        input_seqs.append([char2idx[i] for i in input_chars])
+        target_seqs.append([char2idx[t] for t in target_chars])
+
+    # shape: (n, MAX_SEQ_LENGTH) where n is the number of index sequences
+    print("Shape of input sequences: {}".format(str(np.array(input_seqs).shape)))
+    print("Shape of target sequences: {}".format(str(np.array(target_seqs).shape)))
+
+    # use tf.data.Dataset to create batches and shuffle => TF model
+    # (features, labels) == (input_seqs, target_seqs)
+    sequences = tf.data.Dataset.from_tensor_slices((input_seqs, target_seqs))
+    sequences = sequences.shuffle(buffer_size=BUFFER_SIZE)
+    sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
+
+    print("Shape of batches: {}".format(sequences))
+
+    # ----- MODEL ----- #
