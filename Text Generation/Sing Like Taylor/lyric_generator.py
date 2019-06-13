@@ -18,7 +18,6 @@ Things to examine:
 ################################################################################
 # Imports
 import os
-import re
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -50,6 +49,53 @@ class Dataset:
 
         # lyrics df
         self.lyrics_df = pd.read_csv(input_file, usecols=[column_header], encoding=self.encoding)
+
+
+################################################################################
+# RNN
+def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
+    model = tf.keras.Sequential()
+
+    # Embedding layer
+    model.add(tf.keras.layers.Embedding(
+        input_dim=vocab_size,
+        output_dim=embedding_dim,
+        batch_size=batch_size
+    ))
+
+    # GRU layers
+    if tf.test.is_gpu_available():
+        model.add(tf.keras.layers.CuDNNGRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+        model.add(tf.keras.layers.CuDNNGRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+    else:
+        model.add(tf.keras.layers.GRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+        model.add(tf.keras.layers.GRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+    # Fully Connected layer
+    model.add(tf.keras.layers.Dense(
+        units=vocab_size
+    ))
+
+    return model
 
 
 ################################################################################
@@ -113,3 +159,11 @@ if __name__ == "__main__":
     print("Shape of batches: {}".format(sequences))
 
     # ----- MODEL ----- #
+    m = build_model(
+        vocab_size=vocab_size,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=BATCH_SIZE
+    )
+
+    m.summary()
