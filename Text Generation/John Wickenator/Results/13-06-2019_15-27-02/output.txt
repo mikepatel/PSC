@@ -1,0 +1,69 @@
+Number of Epochs: 100
+Batch Size: 64
+Maximum Sequence Length: 70
+Embedding Dimension: 256
+Number of RNN Units: 2048
+
+################################################################################
+GENERATED OUTPUT:
+John slowly
+makes his way down the eerily empty corridor. He pauses
+before they hit the ground.
+
+John drops his piston, reaching
+over to scratch her on the back.
+
+                                                                            
+
+
+
+                                                                                                                                                                                       
+
+
+
+           EXT. THE                                                        
+
+
+
+                                                                      
+
+
+
+                                                                                                                                                                                             
+
+
+
+                                                                                                                                                                                                              
+
+
+
+                                                                       
+
+
+
+                                                                                                                          
+
+
+
+           EXT. THE                                                          
+
+
+
+                                                                                                                                               
+
+
+
+                                                          
+
+
+
+                                                                                                                                                    
+
+
+
+                                                                                                                                                                                                                         
+
+
+
+                                                                                                                                                           
+################################################################################

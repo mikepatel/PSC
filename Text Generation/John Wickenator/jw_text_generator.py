@@ -20,7 +20,6 @@ Things to examine:
 import os
 import re
 import numpy as np
-import pandas as pd
 from datetime import datetime
 
 import tensorflow as tf
@@ -28,7 +27,7 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 60
+MAX_SEQ_LENGTH = 70
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
@@ -277,6 +276,7 @@ if __name__ == "__main__":
         # write hyperparameters
         f.write("Number of Epochs: {}".format(NUM_EPOCHS))
         f.write("\nBatch Size: {}".format(BATCH_SIZE))
+        f.write("\nMaximum Sequence Length: {}".format(MAX_SEQ_LENGTH))
         f.write("\nEmbedding Dimension: {}".format(EMBEDDING_DIM))
         f.write("\nNumber of RNN Units: {}".format(NUM_RNN_UNITS))
 
