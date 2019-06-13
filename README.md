@@ -4,6 +4,11 @@ The Passive Sign Convention project is a partnership between two friends, John a
 
 <img src="https://i.groupme.com/568x374.jpeg.555fef18f7b24608bfb2aa93cbc0a4b2.large" alt="PSC Logo" width="500"/>
 
+## Models
+* [President Trump Tweet Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Trump%20Net)
+* [John Wick Script Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/John%20Wickenator)
+* [Taylor Swift Lyrics Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor)
+
 ## Instructions
 * Coming Soon!
 
