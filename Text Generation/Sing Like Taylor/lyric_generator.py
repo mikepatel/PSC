@@ -70,4 +70,17 @@ if __name__ == "__main__":
 
     # convert list into one string (char list)
     lyrics = "".join(lyrics_list)
-    print("Length of lyrics text: {}".format(len(lyrics)))
+    # print("Length of lyrics text: {}".format(len(lyrics)))
+
+    # Tokenization: string => char tokens
+    unique_chars = sorted(set(lyrics))
+    vocab_size = len(unique_chars)
+    # print("Unique characters: {}".format(unique_chars))
+    print("Number of unique characters: {}".format(vocab_size))
+
+    # Vectorization: convert char to vectors of int
+    # create mapping from char to int
+    char2idx = {u: i for i, u in enumerate(unique_chars)}
+
+    # create mapping from int to char
+    idx2char = {i: u for i, u in enumerate(unique_chars)}
