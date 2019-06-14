@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2701b5fc-02c6-434b-96ab-03bc7ee44019" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Text Generation/John Wickenator/Results/12-06-2019_15-59-26/events.out.tfevents.1560369566.MICHAEL.v2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/micha.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/micha.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,14 +13,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="826">
-              <caret line="286" lean-forward="true" selection-start-line="286" selection-end-line="286" />
+            <state relative-caret-position="480">
+              <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
               <folding>
-                <element signature="e#289#298#0" expanded="true" />
+                <element signature="e#325#334#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Text Generation/Sing Like Taylor/lyric_generator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-214">
+              <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -42,6 +51,7 @@
       <list>
         <option value="$PROJECT_DIR$/Text Generation/remove_page_numbers.py" />
         <option value="$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py" />
+        <option value="$PROJECT_DIR$/Text Generation/Sing Like Taylor/lyric_generator.py" />
       </list>
     </option>
   </component>
@@ -58,6 +68,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -74,13 +85,12 @@
               <item name="PSC" type="b2602c69:ProjectViewProjectNode" />
               <item name="PSC" type="462c0819:PsiDirectoryNode" />
               <item name="Text Generation" type="462c0819:PsiDirectoryNode" />
-              <item name="John Wickenator" type="462c0819:PsiDirectoryNode" />
+              <item name="Sing Like Taylor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -138,11 +148,18 @@
     <entry file="file://$PROJECT_DIR$/Text Generation/remove_page_numbers.py" />
     <entry file="file://$PROJECT_DIR$/Text Generation/John Wickenator/jw_text_generator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="826">
-          <caret line="286" lean-forward="true" selection-start-line="286" selection-end-line="286" />
+        <state relative-caret-position="480">
+          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
           <folding>
-            <element signature="e#289#298#0" expanded="true" />
+            <element signature="e#325#334#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Text Generation/Sing Like Taylor/lyric_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-214">
+          <caret line="121" column="12" selection-start-line="121" selection-start-column="12" selection-end-line="121" selection-end-column="12" />
         </state>
       </provider>
     </entry>

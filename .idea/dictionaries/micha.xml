@@ -3,8 +3,10 @@
     <words>
       <w>dataset</w>
       <w>datasets</w>
+      <w>hyperparameters</w>
       <w>preprocess</w>
       <w>preprocessing</w>
+      <w>tokenization</w>
     </words>
   </dictionary>
 </component>
