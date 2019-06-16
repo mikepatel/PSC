@@ -1,0 +1,23 @@
+Number of Epochs: 30
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 300
+Temperature: 0.8
+
+################################################################################
+GENERATED OUTPUT:
+And I'll never be the same
+You come around and roll your eyes at, honey
+You might have him, but it's been waiting for you
+Welcome to New York
+Welcome to New York!
+It's been waiting for you
+Welcome to New York
+Welcome to New York
+Welcome to New York!
+It's been waiting for you
+Welcome to New York
+Welcome 
+################################################################################
