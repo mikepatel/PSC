@@ -27,14 +27,18 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 70
+MAX_SEQ_LENGTH = 50
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
-EMBEDDING_DIM = 256
+EMBEDDING_DIM = 512
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 100
-NUM_CHAR_GEN = 50  # number of generated characters
+NUM_EPOCHS = 50
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
+
+# Generation parameters
+START_STRING = "And "
+NUM_CHAR_GEN = 300  # number of generated characters
+TEMPERATURE = 0.8
 
 
 ################################################################################
@@ -133,15 +137,13 @@ def generate(model, start_string):
 
     gen_text = []
 
-    temperature = 0.5
-
     model.reset_states()
 
     for i in range(NUM_CHAR_GEN):
         predictions = model(input_eval)
         predictions = tf.squeeze(predictions, 0)
 
-        predictions /= temperature
+        predictions /= TEMPERATURE
 
         id_predictions = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
 
@@ -255,7 +257,7 @@ if __name__ == "__main__":
     m.build(tf.TensorShape([1, None]))
     m.summary()
 
-    generated = generate(model=m, start_string="We ")
+    generated = generate(model=m, start_string=START_STRING)
 
     # write generated output to text file
     print("\nWriting generated output to text file...")
@@ -268,6 +270,9 @@ if __name__ == "__main__":
         f.write("\nMaximum Sequence Length: {}".format(MAX_SEQ_LENGTH))
         f.write("\nEmbedding Dimension: {}".format(EMBEDDING_DIM))
         f.write("\nNumber of RNN Units: {}".format(NUM_RNN_UNITS))
+
+        f.write("\nNumber of Characters Generated: {}".format(NUM_CHAR_GEN))
+        f.write("\nTemperature: {}".format(TEMPERATURE))
 
         # write generated output
         f.write("\n\n################################################################################")

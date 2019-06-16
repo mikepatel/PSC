@@ -1,0 +1,10 @@
+Number of Epochs: 70
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+
+################################################################################
+GENERATED OUTPUT:
+We never had a shotgun shot in the dark(Oh!)You were 
+################################################################################
