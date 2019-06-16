@@ -4,7 +4,7 @@
 Character-based RNN model to generate lyrical text similar to Taylor Swift songs
 
 ## Dataset
-* Dataset can be found [here](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor/data)
+* Taylor Switft songs dataset can be found [here](https://github.com/mikepatel/PSC/blob/master/Text%20Generation/Sing%20Like%20Taylor/data/taylor_swift_lyrics.csv)
 
 ## Instructions
 ```
