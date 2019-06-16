@@ -1,0 +1,22 @@
+Number of Epochs: 30
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 300
+Temperature: 1.0
+
+################################################################################
+GENERATED OUTPUT:
+And wat just think of me
+And evered was the A-Tit would've felt like
+"Long list of traitors
+Who's really bad at lying
+So watch me strike a match
+On all my wasted time
+As far as I'm concerned you're
+Just anyou
+I don't know about you, just takere not scare down the ground
+When you come back downt
+Like it 
+################################################################################
