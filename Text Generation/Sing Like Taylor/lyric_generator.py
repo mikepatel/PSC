@@ -126,6 +126,32 @@ def build_callbacks(chkpt_dir):
     return sc, tb
 
 
+# Generate output
+def generate(model, start_string):
+    input_eval = [char2idx[c] for c in start_string]
+    input_eval = tf.expand_dims(input_eval, 0)
+
+    gen_text = []
+
+    temperature = 0.5
+
+    model.reset_states()
+
+    for i in range(NUM_CHAR_GEN):
+        predictions = model(input_eval)
+        predictions = tf.squeeze(predictions, 0)
+
+        predictions /= temperature
+
+        id_predictions = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
+
+        input_eval = tf.expand_dims([id_predictions], 0)
+
+        gen_text.append(idx2char[id_predictions])
+
+    return start_string + "".join(gen_text)
+
+
 ################################################################################
 # Main
 if __name__ == "__main__":
@@ -215,3 +241,36 @@ if __name__ == "__main__":
         steps_per_epoch=len(lyrics)//MAX_SEQ_LENGTH//BATCH_SIZE,
         verbose=1
     )
+
+    # ----- GENERATE ----- #
+    # run model with different batch size, so need to rebuild model
+    m = build_model(
+        vocab_size=vocab_size,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=1  # seed the model
+    )
+
+    m.load_weights(tf.train.latest_checkpoint(checkpoint_dir=checkpoint_dir))
+    m.build(tf.TensorShape([1, None]))
+    m.summary()
+
+    generated = generate(model=m, start_string="John ")
+
+    # write generated output to text file
+    print("\nWriting generated output to text file...")
+    output_file = os.path.join(checkpoint_dir, "output.txt")
+
+    with open(output_file, "w+") as f:
+        # write hyperparameters
+        f.write("Number of Epochs: {}".format(NUM_EPOCHS))
+        f.write("\nBatch Size: {}".format(BATCH_SIZE))
+        f.write("\nMaximum Sequence Length: {}".format(MAX_SEQ_LENGTH))
+        f.write("\nEmbedding Dimension: {}".format(EMBEDDING_DIM))
+        f.write("\nNumber of RNN Units: {}".format(NUM_RNN_UNITS))
+
+        # write generated output
+        f.write("\n\n################################################################################")
+        f.write("\nGENERATED OUTPUT:")
+        f.write("\n" + generated)
+        f.write("\n################################################################################")
