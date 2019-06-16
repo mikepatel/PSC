@@ -27,18 +27,18 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 50
-BUFFER_SIZE = 10000
+NUM_EPOCHS = 30
 BATCH_SIZE = 64
+MAX_SEQ_LENGTH = 50
 EMBEDDING_DIM = 512
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 30
+BUFFER_SIZE = 10000
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 # Generation parameters
 START_STRING = "And "
 NUM_CHAR_GEN = 300  # number of generated characters
-TEMPERATURE = 0.7
+TEMPERATURE = 0.65
 
 
 ################################################################################
