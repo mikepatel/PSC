@@ -24,6 +24,7 @@ from datetime import datetime
 
 import tensorflow as tf
 
+
 ################################################################################
 # Model hyperparameters
 MAX_SEQ_LENGTH = 40
@@ -99,6 +100,33 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
 
 
 ################################################################################
+# Loss function
+def loss_fn(labels, logits):
+    return tf.losses.sparse_softmax_cross_entropy(
+        labels=labels,
+        logits=logits
+    )
+
+
+# Callbacks
+def build_callbacks(chkpt_dir):
+    history_file = os.path.join(chkpt_dir, "checkpoint_{epoch}")
+
+    # save callback
+    sc = tf.keras.callbacks.ModelCheckpoint(
+        filepath=history_file,
+        save_weights_only=True,
+        period=CHECKPOINT_PERIOD,
+        verbose=1
+    )
+
+    # TensorBoard callback
+    tb = tf.keras.callbacks.TensorBoard(log_dir=chkpt_dir)
+
+    return sc, tb
+
+
+################################################################################
 # Main
 if __name__ == "__main__":
     # enable eager execution
@@ -167,3 +195,23 @@ if __name__ == "__main__":
     )
 
     m.summary()
+
+    # loss function and optimization
+    m.compile(
+        loss=loss_fn,
+        optimizer=tf.train.AdamOptimizer()
+    )
+
+    # callbacks for checkpoints, Tensorboard
+    dir_name = "Results\\" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    checkpoint_dir = os.path.join(os.getcwd(), dir_name)
+    save_callback, tb_callback = build_callbacks(checkpoint_dir)
+
+    # train model
+    history = m.fit(
+        x=sequences.repeat(),
+        epochs=NUM_EPOCHS,
+        callbacks=[save_callback, tb_callback],
+        steps_per_epoch=len(lyrics)//MAX_SEQ_LENGTH//BATCH_SIZE,
+        verbose=1
+    )
