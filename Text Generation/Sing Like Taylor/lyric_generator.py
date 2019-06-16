@@ -32,7 +32,7 @@ BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 512
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 50
+NUM_EPOCHS = 30
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 # Generation parameters
@@ -172,7 +172,8 @@ if __name__ == "__main__":
     lyrics_list = ["".join(i) for i in df.values]
 
     # convert list into one string (char list)
-    lyrics = "".join(lyrics_list)
+    lyrics = "\n".join(lyrics_list)
+    # print(lyrics)
     # print("Length of lyrics text: {}".format(len(lyrics)))
 
     # Tokenization: string => char tokens
