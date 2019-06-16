@@ -1,0 +1,20 @@
+Number of Epochs: 30
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 300
+Temperature: 0.65
+
+################################################################################
+GENERATED OUTPUT:
+And I lived in your chess game
+But you changed the whole time
+If you could see that I'm the one who understands you
+Been here all along, so why can't you see?
+You belong with me, you belong with me?
+You belong with me?
+You belong with me, you belong with me
+I see your best apology
+But you can tell me th
+################################################################################
