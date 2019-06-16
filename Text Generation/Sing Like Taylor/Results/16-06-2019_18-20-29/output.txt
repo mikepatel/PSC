@@ -1,0 +1,22 @@
+Number of Epochs: 30
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 300
+Temperature: 0.8
+
+################################################################################
+GENERATED OUTPUT:
+And the story of us
+How we met
+And sometimes it doell you take a moment?
+Proby my mind
+Saying it's gonna be alright
+''m turn baby
+I'll be usin' for the rest of my life
+I've been a lot of lonely places
+I've never been one of those nights
+This porry is not a saint and she's on the list
+She looks at me fee
+################################################################################

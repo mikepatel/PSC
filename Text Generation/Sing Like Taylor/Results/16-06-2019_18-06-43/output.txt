@@ -1,0 +1,12 @@
+Number of Epochs: 50
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 300
+Temperature: 0.8
+
+################################################################################
+GENERATED OUTPUT:
+And I'll pla chapparks fly whenever you smileGet me with those green eyes, baby, as the lights go downGive me something that'll I can't help myself'Cause I can't help it if you look like an angelCan't help it if I wanna kiss you in the rain soCome feel this magic I've been feeling since I met youCan't h
+################################################################################
