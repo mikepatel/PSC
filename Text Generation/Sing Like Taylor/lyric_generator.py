@@ -27,13 +27,13 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 40
+MAX_SEQ_LENGTH = 70
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 2048
-NUM_EPOCHS = 50
-NUM_CHAR_GEN = 40  # number of generated characters
+NUM_EPOCHS = 100
+NUM_CHAR_GEN = 50  # number of generated characters
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 
@@ -255,7 +255,7 @@ if __name__ == "__main__":
     m.build(tf.TensorShape([1, None]))
     m.summary()
 
-    generated = generate(model=m, start_string="John ")
+    generated = generate(model=m, start_string="We ")
 
     # write generated output to text file
     print("\nWriting generated output to text file...")

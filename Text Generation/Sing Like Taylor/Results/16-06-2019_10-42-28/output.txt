@@ -1,0 +1,10 @@
+Number of Epochs: 100
+Batch Size: 64
+Maximum Sequence Length: 70
+Embedding Dimension: 256
+Number of RNN Units: 2048
+
+################################################################################
+GENERATED OUTPUT:
+John mineFlash forward, and we're taking on the world t
+################################################################################
