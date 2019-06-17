@@ -39,14 +39,18 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-MAX_SEQ_LENGTH = 300
-NUM_GENERATE = 280  # tweet length is 280 characters
-BUFFER_SIZE = 10000
+NUM_EPOCHS = 50
 BATCH_SIZE = 64
-VOCAB_SIZE = 0  # redefined later in code
+MAX_SEQ_LENGTH = 300
 EMBEDDING_DIM = 256
 NUM_RNN_UNITS = 1024
-NUM_EPOCHS = 50
+BUFFER_SIZE = 10000
+CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
+
+# Generation parameters
+START_STRING = "Make "
+NUM_CHAR_GEN = 280  # number of generated characters; tweet length is 280 characters
+TEMPERATURE = 0.8
 
 
 ################################################################################
@@ -89,8 +93,7 @@ class Dataset:
 
     # preprocess tweets and write output to csv
     def _create_clean_csv(self):
-        input_csv = "DonaldTrumpTweetsDataset.csv"
-        input_csv = "Trump_Twitter_Archive.csv"
+        input_csv = "data\\" + "Trump_Twitter_Archive.csv"
 
         column_header = "Tweet_Text"
 
@@ -104,7 +107,7 @@ class Dataset:
             _temp.append(tweet)
 
         # write cleaned tweets to a new csv
-        dataset_clean_csv = os.path.join(os.getcwd(), "DJT_tweets_noURLs.csv")
+        dataset_clean_csv = os.path.join(os.getcwd(), "data\\DJT_tweets_noURLs.csv")
         out_df = pd.DataFrame(_temp)
         out_df.replace("", np.nan, inplace=True)  # replace empty string cells with np.nan
         out_df = out_df.dropna()  # drop np.nan cells
@@ -162,29 +165,54 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
 
 
 ################################################################################
-# generate text
-def generate(model, start_char):
-    input_eval = [char2idx[s] for s in start_char]
+# Loss function
+def loss_fn(labels, logits):
+    return tf.losses.sparse_softmax_cross_entropy(
+        labels=labels,
+        logits=logits
+    )
+
+
+# Callbacks
+def build_callbacks(chkpt_dir):
+    history_file = os.path.join(chkpt_dir, "checkpoint_{epoch}")
+
+    # save callback
+    sc = tf.keras.callbacks.ModelCheckpoint(
+        filepath=history_file,
+        save_weights_only=True,
+        period=CHECKPOINT_PERIOD,
+        verbose=1
+    )
+
+    # TensorBoard callback
+    tb = tf.keras.callbacks.TensorBoard(log_dir=chkpt_dir)
+
+    return sc, tb
+
+
+# Generate output
+def generate(model, start_string):
+    input_eval = [char2idx[c] for c in start_string]
     input_eval = tf.expand_dims(input_eval, 0)
 
-    text_gen = []
-
-    temperature = 0.5
+    gen_text = []
 
     model.reset_states()
 
-    for i in range(NUM_GENERATE):
+    for i in range(NUM_CHAR_GEN):
         predictions = model(input_eval)
         predictions = tf.squeeze(predictions, 0)
 
-        predictions = predictions / temperature
-        predictions_id = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
+        predictions /= TEMPERATURE
 
-        input_eval = tf.expand_dims([predictions_id], 0)
+        id_predictions = tf.multinomial(predictions, num_samples=1)[-1, 0].numpy()
 
-        text_gen.append(idx2char[predictions_id])
+        input_eval = tf.expand_dims([id_predictions], 0)
 
-    return start_char + "".join(text_gen)
+        gen_text.append(idx2char[id_predictions])
+
+    return start_string + "".join(gen_text)
 
 
 ################################################################################
@@ -196,7 +224,7 @@ if __name__ == "__main__":
     # print out TF version
     print("TF version: {}".format(tf.__version__))
 
-    ########################################
+    # ----- ETL ----- #
     # ETL = Extraction, Transformation, Load
     # get dataset
     d = Dataset()
@@ -208,7 +236,7 @@ if __name__ == "__main__":
     tweets = ["".join(i) for i in tweets_df.values]
 
     # convert tweet list to one long string since a string is a char list
-    tweet_str = "".join(tweets)
+    tweet_str = "\n".join(tweets)
     print("Length of text: {}".format(len(tweet_str)))
 
     # text string => char tokens => vectors of int (1-dimensional arrays) => Model
@@ -252,8 +280,7 @@ if __name__ == "__main__":
 
     print(sequences)
 
-    ########################################
-    # Model
+    # ----- MODEL ----- #
     m = build_model(
         vocab_size=VOCAB_SIZE,
         embedding_dim=EMBEDDING_DIM,
@@ -263,28 +290,15 @@ if __name__ == "__main__":
 
     m.summary()
 
-    # loss function
-    def loss_fn(labels, logits):
-        return tf.losses.sparse_softmax_cross_entropy(
-            labels=labels,
-            logits=logits
-        )
-
     m.compile(
         loss=loss_fn,
         optimizer=tf.train.AdamOptimizer()
     )
 
     # callbacks for checkpoints, TensorBoard
-    checkpoint_dir = os.path.join(os.getcwd(), datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
-    print(checkpoint_dir)
-    history_file = os.path.join(checkpoint_dir, "checkpoint_{epoch}")
-    save_callback = tf.keras.callbacks.ModelCheckpoint(
-        filepath=history_file,
-        save_weights_only=True,
-        verbose=1
-    )
-    tb_callback = tf.keras.callbacks.TensorBoard(log_dir=checkpoint_dir)
+    dir_name = "Results\\" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    checkpoint_dir = os.path.join(os.getcwd(), dir_name)
+    save_callback, tb_callback = build_callbacks(checkpoint_dir)
 
     # train model
     history = m.fit(
@@ -295,8 +309,7 @@ if __name__ == "__main__":
         verbose=1
     )
 
-    ########################################
-    # Generate Output
+    # ----- GENERATE ----- #
     # run model with different batch size, so need to rebuild model
     m = build_model(
         vocab_size=VOCAB_SIZE,
@@ -308,9 +321,25 @@ if __name__ == "__main__":
     m.build(tf.TensorShape([1, None]))
     m.summary()
 
-    gen_tweet = generate(model=m, start_char="M")
+    gen_tweet = generate(model=m, start_string=START_STRING)
 
-    print("\n################################################################################")
-    print("GENERATED TWEET: ")
-    print("\"" + gen_tweet + "\"")
-    print("################################################################################")
+    # write generated output to text file
+    print("\nWriting generated output to text file...")
+    output_file = os.path.join(checkpoint_dir, "output.txt")
+
+    with open(output_file, "w+") as f:
+        # write hyperparameters
+        f.write("Number of Epochs: {}".format(NUM_EPOCHS))
+        f.write("\nBatch Size: {}".format(BATCH_SIZE))
+        f.write("\nMaximum Sequence Length: {}".format(MAX_SEQ_LENGTH))
+        f.write("\nEmbedding Dimension: {}".format(EMBEDDING_DIM))
+        f.write("\nNumber of RNN Units: {}".format(NUM_RNN_UNITS))
+
+        f.write("\nNumber of Characters Generated: {}".format(NUM_CHAR_GEN))
+        f.write("\nTemperature: {}".format(TEMPERATURE))
+
+        # write generated output
+        f.write("\n\n################################################################################")
+        f.write("\nGENERATED OUTPUT:")
+        f.write("\n" + gen_tweet)
+        f.write("\n################################################################################")

@@ -1,0 +1,14 @@
+Number of Epochs: 50
+Batch Size: 64
+Maximum Sequence Length: 300
+Embedding Dimension: 256
+Number of RNN Units: 1024
+Number of Characters Generated: 280
+Temperature: 0.8
+
+################################################################################
+GENERATED OUTPUT:
+Make America Great Again!
+Looking forward to seeing @nfl of the C.1 probably on trade and more nears to come into Government after he is reached with MS. UPMOTE Trump to selecruts all of its climateland a long time associated with a lot of them!
+American sentences. These are treachero
+################################################################################
