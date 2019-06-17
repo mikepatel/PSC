@@ -1,0 +1,15 @@
+Number of Epochs: 100
+Batch Size: 64
+Maximum Sequence Length: 300
+Embedding Dimension: 512
+Number of RNN Units: 1024
+Number of Characters Generated: 280
+Temperature: 0.8
+
+################################################################################
+GENERATED OUTPUT:
+Make DonaldTrump  ... Americans keep moving forward.
+Entrepreneurs: Ive build business after all that we have asked to speak at the three U.S. Dope soon.
+@MooreReidworld If the government will come out in the world  Thank you!
+@grantwephone: @realDonaldTrump I'm a master industrial ma
+################################################################################

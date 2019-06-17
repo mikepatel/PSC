@@ -39,18 +39,18 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-NUM_EPOCHS = 50
+NUM_EPOCHS = 100
 BATCH_SIZE = 64
 MAX_SEQ_LENGTH = 300
-EMBEDDING_DIM = 256
-NUM_RNN_UNITS = 1024
+EMBEDDING_DIM = 512
+NUM_RNN_UNITS = 2048
 BUFFER_SIZE = 10000
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 # Generation parameters
 START_STRING = "Make "
 NUM_CHAR_GEN = 280  # number of generated characters; tweet length is 280 characters
-TEMPERATURE = 0.8
+TEMPERATURE = 0.5
 
 
 ################################################################################
