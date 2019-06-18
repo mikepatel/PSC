@@ -8,7 +8,7 @@ Project Description:
     - Generate our own list of US names using RNNs!
 
 Datasets:
-    csv file of US names
+    csv files of US names for decades: 1990s, 2000s, 2010s
 
 Notes:
 
