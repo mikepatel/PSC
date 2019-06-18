@@ -1,4 +1,4 @@
-""""
+"""
 John Jefferson III and Michael Patel
 June 2019
 Python 3.6.5
