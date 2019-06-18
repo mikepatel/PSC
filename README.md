@@ -8,6 +8,7 @@ The Passive Sign Convention project is a partnership between two friends, John a
 * [President Trump Tweet Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Trump%20Net)
 * [John Wick Script Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/John%20Wickenator)
 * [Taylor Swift Lyrics Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor)
+* [US Names Generator](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/US%20Names)
 
 ## Instructions
 * Individual instructions for each model can be found under each model's directory
