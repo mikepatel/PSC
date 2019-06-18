@@ -278,7 +278,7 @@ if __name__ == "__main__":
     sequences = sequences.shuffle(buffer_size=BUFFER_SIZE)
     sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
-    print(sequences)
+    print("Shape of batch sequences: {}".format(sequences))
 
     # ----- MODEL ----- #
     m = build_model(
