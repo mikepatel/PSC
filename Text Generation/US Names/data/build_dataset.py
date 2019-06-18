@@ -18,6 +18,7 @@ Things to examine:
 ################################################################################
 # Imports
 import os
+import re
 import pandas as pd
 import urllib.request
 from bs4 import BeautifulSoup
@@ -27,18 +28,27 @@ from bs4 import BeautifulSoup
 # 1990s, 2000s, 2010s
 datasets = {
     "1990s": {
-        "url": "https://www.ssa.gov/oact/babynames/decades/names1990s.html",
+        "url": "",
         "csv": ""
     },
     "2000s": {
-        "url": "https://www.ssa.gov/oact/babynames/decades/names2000s.html",
+        "url": "",
         "csv": ""
     },
     "2010s": {
-        "url": "https://www.ssa.gov/oact/babynames/decades/names2010s.html",
+        "url": "",
         "csv": ""
     }
 }
+generic_url = "https://www.ssa.gov/oact/babynames/decades/namesX.html"
+generic_csv = os.path.join(os.getcwd(), "X.csv")
+
+for decade in datasets:
+    datasets[decade]["url"] = re.sub("X", decade, generic_url)
+    datasets[decade]["csv"] = re.sub("X", decade, generic_csv)
+
+print(datasets)
+quit()
 
 url = "https://www.ssa.gov/oact/babynames/decades/names2000s.html"
 
