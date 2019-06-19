@@ -18,6 +18,7 @@ Things to examine:
 ################################################################################
 # Imports
 import os
+import argparse
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -54,6 +55,12 @@ class Dataset:
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # CLI Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("b", help="Generate US boy names")
+    parser.add_argument("g", help="Generate US girl names")
+    parser.parse_args()
+
     # enable eager execution
     tf.enable_eager_execution()
 
