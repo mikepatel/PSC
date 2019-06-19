@@ -18,6 +18,7 @@ Things to examine:
 ################################################################################
 # Imports
 import os
+import sys
 import argparse
 import numpy as np
 import pandas as pd
@@ -55,18 +56,6 @@ class Dataset:
 ################################################################################
 # Main
 if __name__ == "__main__":
-    # CLI Arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--boys", help="Generate US boy names", action="store_true")
-    parser.add_argument("--girls", help="Generate US girl names", action="store_true")
-    args = parser.parse_args()
-
-    if args.boys:
-        print("...boys...")
-
-    if args.girls:
-        print("...girls...")
-
     # enable eager execution
     tf.enable_eager_execution()
 
@@ -76,18 +65,30 @@ if __name__ == "__main__":
     # ----- ETL ----- #
     # ETL = Extraction, Transformation, Load
     d = Dataset()
-    boys_df = d.boys_df
-    girls_df = d.girls_df
 
-    print("Size of Boys Dataframe: {}".format(len(boys_df)))
-    print("Size of Girls Dataframe: {}".format(len(girls_df)))
+    # CLI Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--boys", help="Generate US boy names", action="store_true")
+    parser.add_argument("--girls", help="Generate US girl names", action="store_true")
+    args = parser.parse_args()
+
+    if args.boys:
+        df = d.boys_df
+
+    elif args.girls:
+        df = d.girls_df
+
+    else:
+        print("\nPlease provide an argument: ")
+        parser.print_help()
+        sys.exit(1)
+
+    # ETL continued
+    print("Size of Dataframe: {}".format(len(df)))
 
     # build list from df
-    boys_list = ["".join(i) for i in boys_df.values]
-    girls_list = ["".join(i) for i in girls_df.values]
+    names_list = ["".join(i) for i in df.values]
 
     # convert list into one string (char list)
-    boys = "\n".join(boys_list)
-    girls = "\n".join(girls_list)
-
-    #print(boys)
+    names = "\n".join(names_list)
+    print(names)
