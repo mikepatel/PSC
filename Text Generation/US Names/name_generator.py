@@ -57,9 +57,15 @@ class Dataset:
 if __name__ == "__main__":
     # CLI Arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("b", help="Generate US boy names")
-    parser.add_argument("g", help="Generate US girl names")
-    parser.parse_args()
+    parser.add_argument("--boys", help="Generate US boy names", action="store_true")
+    parser.add_argument("--girls", help="Generate US girl names", action="store_true")
+    args = parser.parse_args()
+
+    if args.boys:
+        print("...boys...")
+
+    if args.girls:
+        print("...girls...")
 
     # enable eager execution
     tf.enable_eager_execution()
@@ -75,3 +81,13 @@ if __name__ == "__main__":
 
     print("Size of Boys Dataframe: {}".format(len(boys_df)))
     print("Size of Girls Dataframe: {}".format(len(girls_df)))
+
+    # build list from df
+    boys_list = ["".join(i) for i in boys_df.values]
+    girls_list = ["".join(i) for i in girls_df.values]
+
+    # convert list into one string (char list)
+    boys = "\n".join(boys_list)
+    girls = "\n".join(girls_list)
+
+    #print(boys)
