@@ -63,6 +63,80 @@ class Dataset:
 
 
 ################################################################################
+# RNN
+def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
+    model = tf.keras.Sequential()
+
+    # Embedding layer
+    model.add(tf.keras.layers.Embedding(
+        input_dim=vocab_size,
+        output_dim=embedding_dim,
+        batch_size=batch_size
+    ))
+
+    # GRU layers
+    if tf.test.is_gpu_available():
+        model.add(tf.keras.layers.CuDNNGRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+        model.add(tf.keras.layers.CuDNNGRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+    else:
+        model.add(tf.keras.layers.GRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+        model.add(tf.keras.layers.GRU(
+            units=num_rnn_units,
+            return_sequences=True,
+            stateful=True
+        ))
+
+    # Fully Connected layer
+    model.add(tf.keras.layers.Dense(
+        units=vocab_size
+    ))
+
+    return model
+
+
+################################################################################
+# Loss function
+def loss_fn(labels, logits):
+    return tf.losses.sparse_softmax_cross_entropy(
+        labels=labels,
+        logits=logits
+    )
+
+
+# Callbacks
+def build_callbacks(chkpt_dir):
+    history_file = os.path.join(chkpt_dir, "checkpoint_{epoch}")
+
+    # save callback
+    sc = tf.keras.callbacks.ModelCheckpoint(
+        filepath=history_file,
+        save_weights_only=True,
+        period=CHECKPOINT_PERIOD,
+        verbose=1
+    )
+
+    # TensorBoard callback
+    tb = tf.keras.callbacks.TensorBoard(log_dir=chkpt_dir)
+
+    return sc, tb
+
+
+################################################################################
 # Main
 if __name__ == "__main__":
     # enable eager execution
@@ -140,3 +214,33 @@ if __name__ == "__main__":
     sequences = sequences.batch(batch_size=BATCH_SIZE, drop_remainder=True)
 
     print("Shape of batches: {}".format(sequences))
+
+    # ----- MODEL ----- #
+    m = build_model(
+        vocab_size=vocab_size,
+        embedding_dim=EMBEDDING_DIM,
+        num_rnn_units=NUM_RNN_UNITS,
+        batch_size=BATCH_SIZE
+    )
+
+    m.summary()
+
+    # loss function and optimization
+    m.compile(
+        loss=loss_fn,
+        optimizer=tf.train.AdamOptimizer()
+    )
+
+    # callbacks for checkpoints, Tensorboard
+    dir_name = "Results\\" + datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+    checkpoint_dir = os.path.join(os.getcwd(), dir_name)
+    save_callback, tb_callback = build_callbacks(checkpoint_dir)
+
+    # train model
+    history = m.fit(
+        x=sequences.repeat(),
+        epochs=NUM_EPOCHS,
+        callbacks=[save_callback, tb_callback],
+        steps_per_epoch=len(names)//MAX_SEQ_LENGTH//BATCH_SIZE,
+        verbose=1
+    )
