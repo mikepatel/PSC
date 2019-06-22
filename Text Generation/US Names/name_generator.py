@@ -40,7 +40,7 @@ CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 # Generation parameters
 START_STRING = "A"
 NUM_CHAR_GEN = 30  # number of generated characters
-TEMPERATURE = 0.5
+TEMPERATURE = 1.0
 
 
 ################################################################################
