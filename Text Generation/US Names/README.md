@@ -10,7 +10,10 @@ Character-based RNN model to generate US names
 
 ## Instructions
 ```
-$ python name_generator.py
+$ python name_generator.py -h
+
+
+$ python name_generator.py [--option]
 ```
 
 ## Results
