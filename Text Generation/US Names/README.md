@@ -14,4 +14,4 @@ $ python name_generator.py
 ```
 
 ## Results
-* Preliminary results can be found [here]()
+* Preliminary results can be found [here](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/US%20Names/Results)
