@@ -11,8 +11,9 @@ Character-based RNN model to generate US names
 ## Instructions
 ```
 $ python name_generator.py -h
-
-
+```
+![help option](https://github.com/mikepatel/PSC/blob/master/Text%20Generation/US%20Names/resources/cli_help.PNG "Help Option")
+```
 $ python name_generator.py [--option]
 ```
 
