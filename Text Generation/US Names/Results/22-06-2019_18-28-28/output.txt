@@ -1,0 +1,13 @@
+Number of Epochs: 1000
+Batch Size: 64
+Maximum Sequence Length: 10
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 6
+Temperature: 0.1
+
+################################################################################
+GENERATED OUTPUT:
+Alexa
+K
+################################################################################
