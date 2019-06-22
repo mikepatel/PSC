@@ -1,0 +1,13 @@
+Number of Epochs: 50
+Batch Size: 64
+Maximum Sequence Length: 25
+Embedding Dimension: 256
+Number of RNN Units: 1024
+Number of Characters Generated: 8
+Temperature: 0.5
+
+################################################################################
+GENERATED OUTPUT:
+AzIla
+Mol
+################################################################################

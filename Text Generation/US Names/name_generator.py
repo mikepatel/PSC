@@ -29,11 +29,11 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-NUM_EPOCHS = 50
+NUM_EPOCHS = 500
 BATCH_SIZE = 64
-MAX_SEQ_LENGTH = 25
-EMBEDDING_DIM = 256
-NUM_RNN_UNITS = 1024
+MAX_SEQ_LENGTH = 50
+EMBEDDING_DIM = 512
+NUM_RNN_UNITS = 2048
 BUFFER_SIZE = 10000
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 

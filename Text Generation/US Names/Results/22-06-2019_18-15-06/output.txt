@@ -1,0 +1,13 @@
+Number of Epochs: 50
+Batch Size: 64
+Maximum Sequence Length: 50
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 8
+Temperature: 0.5
+
+################################################################################
+GENERATED OUTPUT:
+AnGCroxa
+
+################################################################################
