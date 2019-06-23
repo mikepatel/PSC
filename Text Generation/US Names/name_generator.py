@@ -29,7 +29,7 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-NUM_EPOCHS = 550
+NUM_EPOCHS = 400
 BATCH_SIZE = 64
 MAX_SEQ_LENGTH = 10
 EMBEDDING_DIM = 512
