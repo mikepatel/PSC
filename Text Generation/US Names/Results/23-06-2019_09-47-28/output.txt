@@ -1,0 +1,16 @@
+Number of Epochs: 300
+Batch Size: 64
+Maximum Sequence Length: 10
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 30
+Temperature: 1.0
+
+################################################################################
+GENERATED OUTPUT:
+Aubrey
+Lilly
+Madison
+Andrearia
+
+################################################################################
