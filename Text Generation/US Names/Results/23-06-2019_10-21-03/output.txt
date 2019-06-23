@@ -1,0 +1,26 @@
+Number of Epochs: 21
+Batch Size: 64
+Maximum Sequence Length: 10
+Embedding Dimension: 512
+Number of RNN Units: 2048
+Number of Characters Generated: 120
+Temperature: 1.0
+
+################################################################################
+GENERATED OUTPUT:
+Annelexaish
+Maya
+Cassydey
+Cin
+Chloe
+Saylea
+Madelia
+Chelsea
+Alenielia
+Moggarhley
+Madey
+CloTyslaiy
+Olizojeyriela
+Melissa
+Gr
+################################################################################
