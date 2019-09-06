@@ -19,18 +19,7 @@ The Passive Sign Convention project is a partnership between two friends, John a
 
 * Taylor Swift Song Lyric Generator Results:
 
-| June 16, 2019 |
-| :--------------- |
-| Number of Epochs: 25 |
-| Batch Size: 64 |
-| Maximum Sequence Length: 50 |
-| Embedding Dimension: 512 |
-| Number of RNN Units: 2048 |
-| Number of Characters Generated: 300 |
-| Temperature: 0.8 |
-
-
-| GENERATED OUTPUT |
+| GENERATED OUTPUT - June 16, 2019 |
 | :-----------------: |
 | And I lived in your chess game
 But you changed the place where you first met me
