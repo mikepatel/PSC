@@ -16,3 +16,28 @@ The Passive Sign Convention project is a partnership between two friends, John a
 ## Results
 * Preliminary results can be found in [John Wick Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/John%20Wickenator/Results) and [Taylor Swift Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor/Results)
 * Visualization Coming Soon!
+
+* Taylor Swift Song Lyric Generator Results:
+
+| June 16, 2019 |
+| :--------------- |
+| Number of Epochs: 25 |
+| Batch Size: 64 |
+| Maximum Sequence Length: 50 |
+| Embedding Dimension: 512 |
+| Number of RNN Units: 2048 |
+| Number of Characters Generated: 300 |
+| Temperature: 0.8 |
+
+
+| GENERATED OUTPUT |
+| :-----------------: |
+| And I lived in your chess game
+But you changed the place where you first met me
+In a getaway car, oh-oh-oh
+No, they never get far, oh-oh-ahh
+No, nothing goong him was red
+Losing him was black like I'm a trend and she's so over it
+I think her way
+Hold on to the memories, they will hold on to you
+Hold on |
