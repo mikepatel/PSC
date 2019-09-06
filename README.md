@@ -14,10 +14,10 @@ The Passive Sign Convention project is a partnership between two friends, John a
 * Individual instructions for each model can be found under each model's directory
 
 ## Results
-* Preliminary results can be found in [John Wick Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/John%20Wickenator/Results) and [Taylor Swift Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor/Results)
 * Visualization Coming Soon!
+* Preliminary results can be found in [John Wick Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/John%20Wickenator/Results) and [Taylor Swift Results](https://github.com/mikepatel/PSC/tree/master/Text%20Generation/Sing%20Like%20Taylor/Results)
 
-* Taylor Swift Song Lyric Generator Results:
+Taylor Swift Song Lyric Generator Results:
 
 | GENERATED OUTPUT - June 16, 2019 |
 | :-----------------: |
