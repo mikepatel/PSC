@@ -48,7 +48,7 @@ BUFFER_SIZE = 10000
 CHECKPOINT_PERIOD = NUM_EPOCHS  # how frequently to save checkpoints
 
 # Generation parameters
-START_STRING = "Make "
+START_STRING = "Happy birthday "
 NUM_CHAR_GEN = 280  # number of generated characters; tweet length is 280 characters
 TEMPERATURE = 0.5
 
@@ -134,28 +134,16 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
         batch_size=batch_size
     ))
 
-    if tf.test.is_gpu_available():
-        model.add(tf.keras.layers.CuDNNGRU(
-            units=num_rnn_units,
-            return_sequences=True,
-            stateful=True
-        ))
-        model.add(tf.keras.layers.CuDNNGRU(
-            units=num_rnn_units,
-            return_sequences=True,
-            stateful=True
-        ))
-    else:
-        model.add(tf.keras.layers.GRU(
-            units=num_rnn_units,
-            return_sequences=True,
-            stateful=True
-        ))
-        model.add(tf.keras.layers.GRU(
-            units=num_rnn_units,
-            return_sequences=True,
-            stateful=True
-        ))
+    model.add(tf.keras.layers.GRU(
+        units=num_rnn_units,
+        return_sequences=True,
+        stateful=True
+    ))
+    model.add(tf.keras.layers.GRU(
+        units=num_rnn_units,
+        return_sequences=True,
+        stateful=True
+    ))
 
     model.add(tf.keras.layers.Dense(
         units=vocab_size
@@ -167,9 +155,10 @@ def build_model(vocab_size, embedding_dim, num_rnn_units, batch_size):
 ################################################################################
 # Loss function
 def loss_fn(labels, logits):
-    return tf.losses.sparse_softmax_cross_entropy(
-        labels=labels,
-        logits=logits
+    return tf.keras.losses.sparse_categorical_crossentropy(
+        y_true=labels,
+        y_pred=logits,
+        from_logits=True
     )
 
 
@@ -219,7 +208,7 @@ def generate(model, start_string):
 # Main
 if __name__ == "__main__":
     # enable eager execution
-    tf.enable_eager_execution()
+    #tf.enable_eager_execution()
 
     # print out TF version
     print("TF version: {}".format(tf.__version__))
@@ -292,7 +281,7 @@ if __name__ == "__main__":
 
     m.compile(
         loss=loss_fn,
-        optimizer=tf.train.AdamOptimizer()
+        optimizer=tf.keras.optimizers.Adam()
     )
 
     # callbacks for checkpoints, TensorBoard
