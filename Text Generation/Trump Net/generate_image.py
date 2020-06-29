@@ -21,9 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 ################################################################################
 # Main
 if __name__ == "__main__":
-    url = "https://www.tweetgen.com/create/tweet.html"
-    profile_pic_filepath = os.path.join(os.getcwd(), "trump_profile.jpg")
-
+    # chromedriver
     chromedriver_filepath = os.path.join(os.getcwd(), "chromedriver.exe")
     #chrome_options = Options
     driver = webdriver.Chrome(
@@ -31,11 +29,14 @@ if __name__ == "__main__":
         #options=chrome_options
     )
 
+    # open url
+    url = "https://www.tweetgen.com/create/tweet.html"
     driver.get(url=url)
 
     # Theme (light)
 
     # Profile Picture
+    profile_pic_filepath = os.path.join(os.getcwd(), "trump_profile.jpg")
     profile_pic_upload = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "pfpInput"))
     )
