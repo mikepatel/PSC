@@ -29,10 +29,11 @@ if __name__ == "__main__":
 
     # chromedriver
     chromedriver_filepath = os.path.join(GENERATED_DIR, "chromedriver.exe")
-    #chrome_options = Options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(
-        chromedriver_filepath
-        #options=chrome_options
+        chromedriver_filepath,
+        options=chrome_options
     )
 
     # open url
