@@ -25,8 +25,10 @@ from selenium.webdriver.support import expected_conditions as EC
 ################################################################################
 # Main
 if __name__ == "__main__":
+    GENERATED_DIR = os.path.join(os.getcwd(), "generated")
+
     # chromedriver
-    chromedriver_filepath = os.path.join(os.getcwd(), "chromedriver.exe")
+    chromedriver_filepath = os.path.join(GENERATED_DIR, "chromedriver.exe")
     #chrome_options = Options
     driver = webdriver.Chrome(
         chromedriver_filepath
@@ -40,7 +42,7 @@ if __name__ == "__main__":
     # Theme (light)
 
     # Profile Picture
-    profile_pic_filepath = os.path.join(os.getcwd(), "trump_profile.jpg")
+    profile_pic_filepath = os.path.join(GENERATED_DIR, "trump_profile.jpg")
     profile_pic_upload = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "pfpInput"))
     )
@@ -126,6 +128,6 @@ if __name__ == "__main__":
         EC.presence_of_element_located((By.ID, "imageOutput"))
     )
     src = gen_image.get_attribute("src")
-    urllib.request.urlretrieve(src, "generated.png")
+    urllib.request.urlretrieve(src, os.path.join(GENERATED_DIR, "generated.png"))
 
     driver.close()
