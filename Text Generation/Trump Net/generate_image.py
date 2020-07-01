@@ -35,6 +35,10 @@ def get_element(id):
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # load model
+
+    # generate tweet text
+
     GENERATED_DIR = os.path.join(os.getcwd(), "generated")
 
     # chromedriver
