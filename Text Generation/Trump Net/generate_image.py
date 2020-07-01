@@ -23,6 +23,16 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 ################################################################################
+# get specified element
+def get_element(id):
+    elem = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, id))
+    )
+
+    return elem
+
+
+################################################################################
 # Main
 if __name__ == "__main__":
     GENERATED_DIR = os.path.join(os.getcwd(), "generated")
@@ -44,23 +54,17 @@ if __name__ == "__main__":
 
     # Profile Picture
     profile_pic_filepath = os.path.join(GENERATED_DIR, "trump_profile.jpg")
-    profile_pic_upload = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "pfpInput"))
-    )
+    profile_pic_upload = get_element(id="pfpInput")
     profile_pic_upload.send_keys(profile_pic_filepath)
 
     # Name
     name = "Donald J. Trump"
-    name_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "nameInput"))
-    )
+    name_element = get_element(id="nameInput")
     name_element.send_keys(name)
 
     # Username
     username = "realDonaldTrump"
-    username_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "usernameInput"))
-    )
+    username_element = get_element(id="usernameInput")
     username_element.send_keys(username)
 
     # Verified User
@@ -71,40 +75,30 @@ if __name__ == "__main__":
 
     # Tweet Content
     tweet_content = "MAGA"
-    tweet_box = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "tweetTextInput"))
-    )
+    tweet_box = get_element(id="tweetTextInput")
     tweet_box.send_keys(tweet_content)
 
     # Image (skip)
 
     # Time
     time = datetime.now().strftime("%H:%M")
-    time_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "time"))
-    )
+    time_element = get_element(id="time")
     time_element.send_keys(time)
 
     # Date
     # Day
     day = datetime.now().strftime("%d")
-    day_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "dayInput"))
-    )
+    day_element = get_element(id="dayInput")
     day_element.send_keys(day)
 
     # Month
     month = datetime.now().strftime("%m")
-    month_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "monthInput"))
-    )
+    month_element = get_element(id="monthInput")
     month_element.send_keys(month)
 
     # Year
     year = datetime.now().strftime("%Y")
-    year_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "yearInput"))
-    )
+    year_element = get_element(id="yearInput")
     year_element.send_keys(year)
 
     # Retweets
@@ -125,9 +119,7 @@ if __name__ == "__main__":
 
     # download generated image
     sleep(1)
-    gen_image = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "imageOutput"))
-    )
+    gen_image = get_element(id="imageOutput")
     src = gen_image.get_attribute("src")
     urllib.request.urlretrieve(src, os.path.join(GENERATED_DIR, "generated.png"))
 
