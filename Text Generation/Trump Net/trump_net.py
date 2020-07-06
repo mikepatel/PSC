@@ -39,7 +39,7 @@ import tensorflow as tf
 
 ################################################################################
 # Model hyperparameters
-NUM_EPOCHS = 20
+NUM_EPOCHS = 1
 BATCH_SIZE = 64
 MAX_SEQ_LENGTH = 300
 EMBEDDING_DIM = 512
@@ -289,6 +289,10 @@ if __name__ == "__main__":
     checkpoint_dir = os.path.join(os.getcwd(), dir_name)
     save_callback, tb_callback = build_callbacks(checkpoint_dir)
 
+    # save model
+    m.save(os.path.join(os.getcwd(), "saved_model"))
+    quit()
+
     # train model
     history = m.fit(
         x=sequences.repeat(),
@@ -297,6 +301,8 @@ if __name__ == "__main__":
         steps_per_epoch=len(tweet_str)//MAX_SEQ_LENGTH//BATCH_SIZE,
         verbose=1
     )
+
+
 
     # ----- GENERATE ----- #
     # run model with different batch size, so need to rebuild model
