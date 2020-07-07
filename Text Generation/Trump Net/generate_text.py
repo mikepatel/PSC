@@ -13,10 +13,16 @@ File description:
 import os
 import tensorflow as tf
 
+from trump_net import build_model
+
 
 ################################################################################
 # Main
 if __name__ == "__main__":
-    # load model
+    model = build_model(
+
+    )
+
+    # load weights
     save_filepath = os.path.join(os.getcwd(), "saved_model")
-    model = tf.keras.models.load_model(save_filepath)
+    model.load_weights(save_filepath)

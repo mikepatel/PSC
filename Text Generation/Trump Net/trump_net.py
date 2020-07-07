@@ -170,7 +170,7 @@ def build_callbacks(chkpt_dir):
     sc = tf.keras.callbacks.ModelCheckpoint(
         filepath=history_file,
         save_weights_only=True,
-        period=CHECKPOINT_PERIOD,
+        save_freq=CHECKPOINT_PERIOD,
         verbose=1
     )
 
@@ -289,10 +289,6 @@ if __name__ == "__main__":
     checkpoint_dir = os.path.join(os.getcwd(), dir_name)
     save_callback, tb_callback = build_callbacks(checkpoint_dir)
 
-    # save model
-    m.save(os.path.join(os.getcwd(), "saved_model"))
-    quit()
-
     # train model
     history = m.fit(
         x=sequences.repeat(),
@@ -301,8 +297,7 @@ if __name__ == "__main__":
         steps_per_epoch=len(tweet_str)//MAX_SEQ_LENGTH//BATCH_SIZE,
         verbose=1
     )
-
-
+    """
 
     # ----- GENERATE ----- #
     # run model with different batch size, so need to rebuild model
@@ -338,3 +333,4 @@ if __name__ == "__main__":
         f.write("\nGENERATED OUTPUT:")
         f.write("\n" + gen_tweet)
         f.write("\n################################################################################")
+    """
